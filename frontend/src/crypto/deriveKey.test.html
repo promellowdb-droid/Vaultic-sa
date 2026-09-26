@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test deriveKey</title>
+</head>
+<body>
+  <h1>Test de dérivation de clé maître</h1>
+  <p>Ouvre la console pour voir le résultat.</p>
+  <script type="module">
+    import { deriveMasterKey } from "/src/crypto/deriveKey.js";
+
+    const start = performance.now();
+    const salt = btoa("un-sel-de-test-1234"); // simule un masterKeySalt en base64
+    const key = await deriveMasterKey("motdepassemaitretest", salt);
+    const elapsed = performance.now() - start;
+
+    console.log("Clé maître dérivée (bytes) :", key);
+    console.log("Longueur :", key.length, "octets");
+    console.log("Temps de dérivation :", elapsed.toFixed(0), "ms");
+  </script>
+</body>
+</html>

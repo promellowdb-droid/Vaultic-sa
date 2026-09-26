@@ -1,0 +1,13 @@
+node_modules/
+*.log
+.env
+dist/
+vaultic.db
+vaultic.db-shm
+vaultic.db-wal
+theme-reference/
+logs/
+lancer-application.bat
+lancer-logiciel-vaultic.bat
+lancer-vaultic-silencieux.vbs
+lancer-avec-https-public.bat

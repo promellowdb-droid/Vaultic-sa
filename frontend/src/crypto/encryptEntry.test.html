@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test encryptEntry</title>
+</head>
+<body>
+  <h1>Test chiffrement d'une entrée du coffre</h1>
+  <p>Ouvre la console pour voir le résultat.</p>
+  <script type="module">
+    import { deriveMasterKey } from "/src/crypto/deriveKey.js";
+    import { generateVaultKey } from "/src/crypto/vaultKey.js";
+    import { encryptEntry, decryptEntry } from "/src/crypto/encryptEntry.js";
+
+    const salt = btoa("un-sel-de-test-1234");
+    const masterKey = await deriveMasterKey("motdepassemaitretest", salt);
+    const vaultKey = await generateVaultKey();
+
+    const original = {
+      name: "Discord",
+      username: "exemple@email.com",
+      password: "MonMotDePasse123",
+      url: "https://discord.com",
+    };
+
+    const { encryptedData, nonce } = await encryptEntry(original, vaultKey);
+    console.log("Entrée chiffrée (à envoyer au serveur) :", encryptedData);
+
+    const decrypted = await decryptEntry(encryptedData, nonce, vaultKey);
+    console.log("Entrée déchiffrée :", decrypted);
+
+    const matches = JSON.stringify(decrypted) === JSON.stringify(original);
+    console.log("Identique à l'original :", matches);
+
+    // Vérifie qu'une entrée chiffrée avec une AUTRE clé de coffre échoue au déchiffrement
+    const otherVaultKey = await generateVaultKey();
+    try {
+      await decryptEntry(encryptedData, nonce, otherVaultKey);
+      console.error("PROBLÈME : le déchiffrement aurait dû échouer !");
+    } catch (e) {
+      console.log("Échec attendu avec mauvaise clé de coffre :", e.message);
+    }
+  </script>
+</body>
+</html>

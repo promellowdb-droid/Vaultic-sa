@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test vaultKey</title>
+</head>
+<body>
+  <h1>Test chiffrement/déchiffrement de la clé du coffre</h1>
+  <p>Ouvre la console pour voir le résultat.</p>
+  <script type="module">
+    import { deriveMasterKey } from "/src/crypto/deriveKey.js";
+    import { generateVaultKey, encryptVaultKey, decryptVaultKey } from "/src/crypto/vaultKey.js";
+
+    const salt = btoa("un-sel-de-test-1234");
+    const masterKey = await deriveMasterKey("motdepassemaitretest", salt);
+
+    const vaultKey = await generateVaultKey();
+    console.log("Clé du coffre générée, longueur :", vaultKey.length, "octets");
+
+    const { encryptedVaultKey, nonce } = await encryptVaultKey(vaultKey, masterKey);
+    console.log("Clé du coffre chiffrée (à stocker sur le serveur) :", encryptedVaultKey);
+
+    const decrypted = await decryptVaultKey(encryptedVaultKey, nonce, masterKey);
+    const matches = decrypted.every((byte, i) => byte === vaultKey[i]);
+    console.log("Déchiffrement réussi et identique à l'original :", matches);
+
+    // Test avec une mauvaise clé maître : doit lever une erreur
+    const wrongKey = await deriveMasterKey("mauvaismotdepasse", salt);
+    try {
+      await decryptVaultKey(encryptedVaultKey, nonce, wrongKey);
+      console.error("PROBLÈME : le déchiffrement aurait dû échouer !");
+    } catch (e) {
+      console.log("Échec attendu avec mauvaise clé :", e.message);
+    }
+  </script>
+</body>
+</html>
