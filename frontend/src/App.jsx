@@ -9,6 +9,7 @@ import CreateMasterPassword from "./pages/CreateMasterPassword.jsx";
 import UnlockVault from "./pages/UnlockVault.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Admin from "./pages/Admin.jsx";
+import Legal from "./pages/Legal.jsx";
 
 function RequireSession({ children }) {
   const { isAuthenticated } = useVault();
@@ -34,6 +35,10 @@ export default function App() {
       <Route path="/unlock" element={<RequireSession><UnlockVault /></RequireSession>} />
       <Route path="/dashboard" element={<RequireUnlocked><Dashboard /></RequireUnlocked>} />
       <Route path="/admin" element={<RequireSession><Admin /></RequireSession>} />
+      <Route path="/privacy" element={<Legal />} />
+      <Route path="/terms" element={<Legal />} />
+      <Route path="/cookies" element={<Legal />} />
+      <Route path="/legal" element={<Legal />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

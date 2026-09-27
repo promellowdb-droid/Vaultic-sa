@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+Allow: /privacy
+Allow: /terms
+Allow: /cookies
+Allow: /legal
+Allow: /login
+Allow: /register
+
+# Disallow private vault and admin paths for privacy and security
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /unlock
+Disallow: /setup-master
+Disallow: /api/
+
+# Friendly to AI Crawlers & Agents
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://vaultic-sa.fr/sitemap.xml

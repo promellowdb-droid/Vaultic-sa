@@ -1952,3 +1952,198 @@ input {
   display: flex; justify-content: flex-end;
 }
 .full-width { width: 100%; justify-content: center; }
+
+/* ==========================================================================
+   PAGE LÉGALE & RGPD / CGU / COOKIES
+   ========================================================================== */
+.legal-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+}
+.legal-container {
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+  flex: 1;
+}
+.legal-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.legal-header h1 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin: 1rem 0;
+  line-height: 1.25;
+}
+.legal-intro {
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 720px;
+  margin: 0 auto 2rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.legal-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.legal-tab-btn {
+  background: #141414;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.65rem 1.2rem;
+  border-radius: 9999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.legal-tab-btn:hover {
+  background: #1f1f1f;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.legal-tab-btn.active {
+  background: var(--theme-color);
+  color: #ffffff;
+  border-color: var(--theme-color);
+  box-shadow: 0 0 15px var(--theme-glow);
+}
+
+.legal-content-card {
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  margin-top: 1rem;
+}
+.legal-article h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+.legal-date {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.legal-article h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 1.75rem 0 0.75rem;
+  border-left: 3px solid var(--theme-color);
+  padding-left: 0.75rem;
+}
+.legal-article p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.legal-article ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.legal-article li {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.93rem;
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+.legal-article li strong {
+  color: #ffffff;
+}
+
+.callout-box {
+  background: rgba(101, 113, 255, 0.08);
+  border: 1px solid rgba(101, 113, 255, 0.25);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.callout-box.warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+  color: #fef3c7;
+}
+.callout-box.success {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+  color: #d1fae5;
+}
+
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background: #000000;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.legal-table th {
+  background: rgba(255, 255, 255, 0.04);
+  text-align: left;
+  padding: 0.85rem 1rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.legal-table td {
+  padding: 0.9rem 1rem;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.host-card {
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin: 0.75rem 0 1.5rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.host-card a {
+  color: var(--theme-color);
+  text-decoration: underline;
+}
+
+.footer-legal-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+}
+.footer-legal-links a {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-legal-links a:hover {
+  color: #ffffff;
+}
+.footer-legal-links span {
+  color: rgba(255, 255, 255, 0.25);
+}

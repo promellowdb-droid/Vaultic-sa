@@ -41,13 +41,13 @@ export default function Landing() {
 
   return (
     <div className="theme-shop-wrapper">
-      {/* 3D FLOATING SHAPES DU THEME (Les vraies formes 3D en arrière-plan) */}
-      <div className="shapes-container">
-        <img src="https://i.ibb.co/hRQSLmLk/3d-0.webp" className="elegant-shape shape-1" alt="" />
-        <img src="https://i.ibb.co/M4JkzKd/3d-1.webp" className="elegant-shape shape-2" alt="" />
-        <img src="https://i.ibb.co/Xxt3c2nt/3d-2.webp" className="elegant-shape shape-3" alt="" />
-        <img src="https://i.ibb.co/YBV0n1Xh/3d-3.webp" className="elegant-shape shape-4" alt="" />
-        <img src="https://i.ibb.co/hRQSLmLk/3d-0.webp" className="elegant-shape shape-5" alt="" />
+      {/* 3D FLOATING SHAPES DU THEME (Formes décoratives avec accessibilité a11y) */}
+      <div className="shapes-container" aria-hidden="true">
+        <img src="https://i.ibb.co/hRQSLmLk/3d-0.webp" className="elegant-shape shape-1" alt="Forme géométrique 3D néon en apesanteur" loading="lazy" />
+        <img src="https://i.ibb.co/M4JkzKd/3d-1.webp" className="elegant-shape shape-2" alt="Élément géométrique abstrait 3D" loading="lazy" />
+        <img src="https://i.ibb.co/Xxt3c2nt/3d-2.webp" className="elegant-shape shape-3" alt="Objet 3D futuriste flottant" loading="lazy" />
+        <img src="https://i.ibb.co/YBV0n1Xh/3d-3.webp" className="elegant-shape shape-4" alt="Capsule technologique 3D" loading="lazy" />
+        <img src="https://i.ibb.co/hRQSLmLk/3d-0.webp" className="elegant-shape shape-5" alt="Forme néon d'arrière-plan 3D" loading="lazy" />
       </div>
 
       {/* TOP ANNOUNCEMENT BAR */}
@@ -345,6 +345,13 @@ export default function Landing() {
               <a href="#faq">Questions fréquentes</a>
             </div>
             <div className="footer-col">
+              <h4>Légal & Sécurité</h4>
+              <Link to="/privacy">Confidentialité (RGPD)</Link>
+              <Link to="/terms">Conditions (CGU)</Link>
+              <Link to="/cookies">Traceurs & Cookies</Link>
+              <Link to="/legal">Mentions Légales</Link>
+            </div>
+            <div className="footer-col">
               <h4>Accès</h4>
               <Link to="/login">Connexion</Link>
               <Link to="/register">Créer un compte</Link>
@@ -355,6 +362,13 @@ export default function Landing() {
 
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Vaultic (Vaultic / SA). Tous droits réservés.</span>
+          <div className="footer-legal-links">
+            <Link to="/privacy">Données personnelles</Link>
+            <span>•</span>
+            <Link to="/cookies">Cookies</Link>
+            <span>•</span>
+            <Link to="/legal">Mentions légales</Link>
+          </div>
           <span className="footer-security-note">Chiffrement AES-256-GCM certifié Zero-Knowledge.</span>
         </div>
       </footer>
