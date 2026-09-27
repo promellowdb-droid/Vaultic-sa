@@ -14,5 +14,5 @@ export const env = {
   port: Number(required("PORT", "3001")),
   nodeEnv: required("NODE_ENV", "development"),
   isProduction: process.env.NODE_ENV === "production",
-  sessionSecret: required("SESSION_SECRET"),
+  sessionSecret: required("SESSION_SECRET", "vaultic_default_secret_change_in_prod_" + Math.random()),
 };
