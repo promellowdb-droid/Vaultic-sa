@@ -23,10 +23,22 @@ function RequireUnlocked({ children }) {
   return children;
 }
 
+function HomeRoute() {
+  const isDesktopOrStandalone =
+    navigator.userAgent.includes("VaulticDesktop") ||
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone;
+
+  if (isDesktopOrStandalone) {
+    return <Navigate to="/login" replace />;
+  }
+  return <Landing />;
+}
+
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
+      <Route path="/" element={<HomeRoute />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/setup-master" element={<RequireSession><CreateMasterSecret /></RequireSession>} />

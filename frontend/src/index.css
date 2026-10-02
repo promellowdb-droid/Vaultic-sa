@@ -2359,3 +2359,174 @@ input {
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   MODALE DE CHOIX D'EXPÉRIENCE (LOGICIEL VS WEB)
+   ========================================================================== */
+.choice-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(16px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeInBackground 0.25s ease;
+}
+.choice-modal-box {
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  max-width: 780px;
+  width: 100%;
+  padding: 2.5rem 2rem;
+  position: relative;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(101, 113, 255, 0.12);
+  animation: popDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.choice-modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.choice-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+.choice-modal-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.choice-modal-header h2 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 800;
+  color: #fff;
+  margin: 0.75rem 0 0.5rem;
+}
+.choice-modal-header p {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.95rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.choice-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+@media (max-width: 640px) {
+  .choice-options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.choice-card-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.choice-card-item:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+.choice-card-item.highlight {
+  background: linear-gradient(180deg, #181828 0%, #111116 100%);
+  border: 1px solid rgba(101, 113, 255, 0.45);
+  box-shadow: 0 0 25px rgba(101, 113, 255, 0.15);
+}
+.choice-badge-tag {
+  position: absolute;
+  top: -11px;
+  left: 1.25rem;
+  background: var(--theme-color);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px var(--theme-glow);
+}
+.choice-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-color);
+  margin-bottom: 1.25rem;
+}
+.choice-card-item h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.choice-card-item p {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.btn-modal-action-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--theme-color);
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 15px var(--theme-glow);
+}
+.btn-modal-action-primary:hover {
+  background: var(--theme-color-hover);
+  transform: translateY(-2px);
+}
+.btn-modal-action-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.8rem 1.2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-modal-action-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}

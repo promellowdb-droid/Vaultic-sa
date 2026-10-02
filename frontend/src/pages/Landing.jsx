@@ -6,6 +6,7 @@ export default function Landing() {
   const navigate = useNavigate();
   const { isAuthenticated, isUnlocked } = useVault();
   const [openFaq, setOpenFaq] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -314,9 +315,13 @@ export default function Landing() {
                 <li><span className="check-icon">✓</span> Confidentialité totale garantie</li>
               </ul>
 
-              <Link to="/register" className="btn-pricing-secondary">
+              <button
+                type="button"
+                onClick={() => setSelectedPlan("Personnelle")}
+                className="btn-pricing-secondary"
+              >
                 Démarrer gratuitement
-              </Link>
+              </button>
             </div>
 
             {/* OFFRE MICRO-ENTREPRISE */}
@@ -340,9 +345,13 @@ export default function Landing() {
                 <li><span className="check-icon">✓</span> Accès anticipé aux nouveautés</li>
               </ul>
 
-              <Link to="/register" className="btn-pricing-primary">
+              <button
+                type="button"
+                onClick={() => setSelectedPlan("Micro-Entreprise")}
+                className="btn-pricing-primary"
+              >
                 Profiter de l'offre
-              </Link>
+              </button>
             </div>
 
             {/* OFFRE ENTREPRISE */}
@@ -366,13 +375,73 @@ export default function Landing() {
                 <li><span className="check-icon">✓</span> Assistance et onboarding prioritaire</li>
               </ul>
 
-              <Link to="/register" className="btn-pricing-secondary">
+              <button
+                type="button"
+                onClick={() => setSelectedPlan("Entreprise")}
+                className="btn-pricing-secondary"
+              >
                 Rejoindre l'accès anticipé
-              </Link>
+              </button>
             </div>
           </div>
         </div>
       </section>
+
+      {/* MODALE DE CHOIX D'EXPÉRIENCE (LOGICIEL .EXE VS VERSION WEB) */}
+      {selectedPlan && (
+        <div className="choice-modal-overlay" onClick={() => setSelectedPlan(null)}>
+          <div className="choice-modal-box" onClick={(e) => e.stopPropagation()}>
+            <button className="choice-modal-close" onClick={() => setSelectedPlan(null)} aria-label="Fermer la fenêtre">✕</button>
+
+            <div className="choice-modal-header">
+              <span className="pricing-pill">Formule {selectedPlan} sélectionnée</span>
+              <h2>Comment souhaitez-vous utiliser Vaultic ?</h2>
+              <p>Choisissez l'expérience qui correspond le mieux à votre utilisation pour commencer.</p>
+            </div>
+
+            <div className="choice-options-grid">
+              {/* OPTION 1 : LOGICIEL WINDOWS .EXE (RECOMMANDÉ) */}
+              <div className="choice-card-item highlight">
+                <div className="choice-badge-tag">★ Recommandé</div>
+                <div className="choice-icon-wrap">
+                  <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor" aria-hidden="true">
+                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
+                  </svg>
+                </div>
+                <h3>Logiciel Windows (.exe)</h3>
+                <p>Application autonome et ultra-rapide. Fonctionne indépendamment de votre navigateur avec une sécurité maximale.</p>
+                <a
+                  href="/download/windows"
+                  className="btn-modal-action-primary"
+                  onClick={() => setSelectedPlan(null)}
+                >
+                  Télécharger le logiciel (.exe)
+                </a>
+              </div>
+
+              {/* OPTION 2 : VERSION WEB */}
+              <div className="choice-card-item">
+                <div className="choice-icon-wrap">
+                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                </div>
+                <h3>Essayer la version Web</h3>
+                <p>Ouvrez votre coffre directement dans votre navigateur actuel en quelques secondes sans rien installer.</p>
+                <Link
+                  to="/register"
+                  className="btn-modal-action-secondary"
+                  onClick={() => setSelectedPlan(null)}
+                >
+                  Continuer sur le Web
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* SECTION TÉLÉCHARGEMENT */}
       <section id="download" className="theme-download-section">
