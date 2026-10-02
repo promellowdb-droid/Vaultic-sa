@@ -11,3 +11,8 @@ lancer-application.bat
 lancer-logiciel-vaultic.bat
 lancer-vaultic-silencieux.vbs
 lancer-avec-https-public.bat
+desktop/
+LOGICIELS-WINDOWS-VAULTIC/
+dist-admin/
+dist-public/
+

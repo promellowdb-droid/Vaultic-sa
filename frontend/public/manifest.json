@@ -2,7 +2,7 @@
   "name": "Vaultic — Coffre-fort ZK",
   "short_name": "Vaultic",
   "description": "Gestionnaire de mots de passe zero-knowledge",
-  "start_url": "/",
+  "start_url": "/login",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#6571FF",

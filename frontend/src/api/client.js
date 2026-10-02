@@ -1,7 +1,7 @@
-// Détection dynamique de l'hôte pour supporter localhost, réseau local Wi-Fi et HTTPS tunnel
-const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+// Détection propre de l'API : port 5173 en dev local, sinon chemin relatif /api sur le domaine de production
+const API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") && window.location.port === "5173"
   ? "http://localhost:3001/api"
-  : `${window.location.protocol}//${window.location.hostname}:3001/api`;
+  : "/api";
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
