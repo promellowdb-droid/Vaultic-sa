@@ -37,6 +37,14 @@ app.use(checkBannedIp);
 app.use(express.json());
 app.use(sessionMiddleware);
 
+// Route de téléchargement direct du logiciel Windows (.exe)
+app.get("/download/windows", (req, res) => {
+  res.redirect(
+    302,
+    "https://github.com/promellowdb-droid/Vaultic-sa/releases/download/v1.0.0/Vaultic.exe"
+  );
+});
+
 // API routes
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", app: "Vaultic", ip: req.clientIp });

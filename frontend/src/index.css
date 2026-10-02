@@ -2147,3 +2147,215 @@ input {
 .footer-legal-links span {
   color: rgba(255, 255, 255, 0.25);
 }
+
+/* ==========================================================================
+   BOUTON TELECHARGEMENT NAVBAR
+   ========================================================================== */
+.btn-nav-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.5rem 0.95rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-nav-download:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   SECTION OFFRES & TARIFS (STYLE APPLE / GLASSMORPHISM)
+   ========================================================================== */
+.theme-pricing-section {
+  padding: 5rem 1.5rem;
+  background: #000000;
+  position: relative;
+}
+.pricing-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  max-width: 1180px;
+  margin: 3rem auto 0;
+  align-items: stretch;
+}
+@media (max-width: 960px) {
+  .pricing-grid-3 {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+}
+
+.pricing-card {
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2.25rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(20px);
+}
+.pricing-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.pricing-card.featured {
+  background: linear-gradient(180deg, #161622 0%, #111115 100%);
+  border: 1px solid rgba(101, 113, 255, 0.4);
+  box-shadow: 0 0 30px rgba(101, 113, 255, 0.15);
+}
+.pricing-card.featured:hover {
+  border-color: var(--theme-color);
+  box-shadow: 0 0 45px rgba(101, 113, 255, 0.25);
+}
+
+.pricing-badge-popular {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--theme-color);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.9rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px var(--theme-glow);
+}
+
+.pricing-badge-limited {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.9rem;
+  border-radius: 9999px;
+}
+
+.pricing-header {
+  margin-bottom: 1.75rem;
+}
+.pricing-pill {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--theme-color);
+  background: rgba(101, 113, 255, 0.12);
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  margin-bottom: 0.75rem;
+}
+.pricing-header h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.pricing-desc {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  min-height: 2.6rem;
+}
+
+.pricing-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.price-amount {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+.price-period {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+}
+.pricing-features li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+.check-icon {
+  color: #10b981;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.btn-pricing-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--theme-color);
+  color: #fff;
+  padding: 0.85rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 20px var(--theme-glow);
+}
+.btn-pricing-primary:hover {
+  background: var(--theme-color-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px var(--theme-glow);
+}
+
+.btn-pricing-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.85rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-pricing-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}

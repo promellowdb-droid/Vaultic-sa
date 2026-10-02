@@ -83,18 +83,25 @@ export default function Landing() {
 
           <nav className="nav-menu" aria-label="Navigation principale">
             <a href="#features">Fonctionnalités</a>
+            <a href="#pricing">Offres & Tarifs</a>
             <a href="#download">Télécharger</a>
             <a href="#faq">FAQ</a>
             {isAuthenticated && <Link to="/admin" className="nav-admin-link">⚙ Admin</Link>}
           </nav>
 
           <div className="nav-cta-group">
+            <a href="/download/windows" className="btn-nav-download" title="Télécharger le logiciel Windows">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+                <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
+              </svg>
+              <span>Logiciel .exe</span>
+            </a>
             <Link to={destinationVault} className="btn-nav-vault">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
-              <span>{isAuthenticated ? "Accéder à mon coffre" : "Se connecter"}</span>
+              <span>{isAuthenticated ? "Mon Coffre" : "Se connecter"}</span>
             </Link>
           </div>
         </div>
@@ -123,22 +130,19 @@ export default function Landing() {
           </p>
 
           <div className="hero-cta-buttons">
-            <Link to="/register" className="theme-btn-primary">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="8.5" cy="7" r="4" />
-                <line x1="20" y1="8" x2="20" y2="14" />
-                <line x1="23" y1="11" x2="17" y2="11" />
+            <a href="/download/windows" className="theme-btn-primary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
               </svg>
-              <span>Créer un compte gratuit</span>
-            </Link>
+              <span>Télécharger pour Windows (.exe)</span>
+            </a>
 
             <Link to={destinationVault} className="theme-btn-secondary">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
-              <span>Ouvrir mon coffre</span>
+              <span>Ouvrir dans le navigateur</span>
             </Link>
           </div>
 
@@ -273,24 +277,124 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* SECTION OFFRES & TARIFS (STYLE APPLE MODERNE) */}
+      <section id="pricing" className="theme-pricing-section">
+        <div className="section-container">
+          <div className="section-header">
+            <div className="theme-hero-badge small">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+              <span>NOS OFFRES & TARIFS</span>
+            </div>
+            <h2>Une formule claire pour chaque besoin</h2>
+            <p>Profitez d'une protection de haut niveau pour vos accès personnels et professionnels.</p>
+          </div>
+
+          <div className="pricing-grid-3">
+            {/* OFFRE PERSONNELLE */}
+            <div className="pricing-card">
+              <div className="pricing-header">
+                <span className="pricing-pill">Pour 1 personne</span>
+                <h3>Personnelle</h3>
+                <p className="pricing-desc">Pour sécuriser tous vos comptes et appareils personnels au quotidien.</p>
+                <div className="pricing-price-box">
+                  <span className="price-amount">0 €</span>
+                  <span className="price-period">/ toujours gratuit</span>
+                </div>
+              </div>
+
+              <ul className="pricing-features">
+                <li><span className="check-icon">✓</span> Mots de passe illimités</li>
+                <li><span className="check-icon">✓</span> 1 utilisateur individuel</li>
+                <li><span className="check-icon">✓</span> Synchronisation PC, Mobile & Web</li>
+                <li><span className="check-icon">✓</span> Générateur de mots de passe forts</li>
+                <li><span className="check-icon">✓</span> Déverrouillage rapide par code</li>
+                <li><span className="check-icon">✓</span> Confidentialité totale garantie</li>
+              </ul>
+
+              <Link to="/register" className="btn-pricing-secondary">
+                Démarrer gratuitement
+              </Link>
+            </div>
+
+            {/* OFFRE MICRO-ENTREPRISE */}
+            <div className="pricing-card featured">
+              <div className="pricing-badge-popular">Offre de lancement</div>
+              <div className="pricing-header">
+                <span className="pricing-pill">Freelances & Indépendants</span>
+                <h3>Micro-Entreprise</h3>
+                <p className="pricing-desc">Idéal pour les indépendants et professionnels ayant besoin d'une sécurité renforcée.</p>
+                <div className="pricing-price-box">
+                  <span className="price-amount">0 €</span>
+                  <span className="price-period">/ Gratuit avant le 10 novembre</span>
+                </div>
+              </div>
+
+              <ul className="pricing-features">
+                <li><span className="check-icon">✓</span> Tout ce qui est inclus dans Personnelle</li>
+                <li><span className="check-icon">✓</span> Compartimentation Pro & Personnel</li>
+                <li><span className="check-icon">✓</span> Journal d'accès sécurisé</li>
+                <li><span className="check-icon">✓</span> Support prioritaire par courriel</li>
+                <li><span className="check-icon">✓</span> Accès anticipé aux nouveautés</li>
+              </ul>
+
+              <Link to="/register" className="btn-pricing-primary">
+                Profiter de l'offre
+              </Link>
+            </div>
+
+            {/* OFFRE ENTREPRISE */}
+            <div className="pricing-card">
+              <div className="pricing-badge-limited">Accès Anticipé</div>
+              <div className="pricing-header">
+                <span className="pricing-pill">Équipes & Sociétés</span>
+                <h3>Entreprise</h3>
+                <p className="pricing-desc">Gestion centralisée et supervision avancée pour toute votre structure.</p>
+                <div className="pricing-price-box">
+                  <span className="price-amount">0 €</span>
+                  <span className="price-period">/ Gratuit jusqu'au 10 décembre</span>
+                </div>
+              </div>
+
+              <ul className="pricing-features">
+                <li><span className="check-icon">✓</span> Tout ce qui est inclus dans Micro-Entreprise</li>
+                <li><span className="check-icon">✓</span> Gestion centralisée multi-utilisateurs</li>
+                <li><span className="check-icon">✓</span> Console d'administration dédiée</li>
+                <li><span className="check-icon">✓</span> Filtrage et contrôle d'adresses IP</li>
+                <li><span className="check-icon">✓</span> Assistance et onboarding prioritaire</li>
+              </ul>
+
+              <Link to="/register" className="btn-pricing-secondary">
+                Rejoindre l'accès anticipé
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* SECTION TÉLÉCHARGEMENT */}
       <section id="download" className="theme-download-section">
         <div className="download-card-banner">
-          <div className="download-badge">APPLICATION MULTI-ÉCRANS</div>
-          <h2>Emportez Vaultic partout avec vous</h2>
+          <div className="download-badge">APPLICATION INSTALLABLE PC & MOBILE</div>
+          <h2>Téléchargez Vaultic sur tous vos appareils</h2>
           <p>
-            Disponible directement sur votre ordinateur Windows ou sur votre téléphone mobile
-            en quelques secondes.
+            Installez notre application Windows officielle ou ajoutez Vaultic à votre smartphone
+            en un instant pour un accès rapide sans ouvrir votre navigateur.
           </p>
           <div className="download-actions">
-            <Link to="/register" className="theme-btn-primary large">
-              <span>Commencer maintenant</span>
-            </Link>
+            <a href="/download/windows" className="theme-btn-primary large">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
+              </svg>
+              <span>Télécharger pour Windows (.exe)</span>
+            </a>
             <Link to={destinationVault} className="theme-btn-secondary">
-              <span>Se connecter</span>
+              <span>Utiliser la version Web</span>
             </Link>
           </div>
-          <span className="download-compat">Compatible Windows 10 & 11 • Application Mobile iPhone & Android</span>
+          <span className="download-compat">Compatible Windows 10 & 11 • Version Mobile pour iPhone et Android</span>
         </div>
       </section>
 
