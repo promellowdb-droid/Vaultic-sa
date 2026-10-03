@@ -52,12 +52,6 @@ export default function Register() {
       const { encryptedVaultKey, nonce } = await encryptVaultKey(vaultKey, masterKey);
       await api.storeVaultKey(encryptedVaultKey, nonce, "password");
 
-      // Si le compte est administrateur (ex: premier compte ou créé depuis l'app admin), redirection vers la console Admin
-      if (user.isAdmin) {
-        navigate("/admin");
-        return;
-      }
-
       // Sur navigateur web → proposer le téléchargement plutôt que le coffre
       if (!isDesktopApp()) {
         navigate("/download-app");

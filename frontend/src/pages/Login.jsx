@@ -40,12 +40,6 @@ export default function Login() {
       const user = await api.login(username, password);
       setSession(user);
 
-      // Admin → console admin directement
-      if (isAdminApp || user.isAdmin) {
-        navigate("/admin");
-        return;
-      }
-
       // Sur navigateur web → proposer le téléchargement, pas le coffre
       if (!isDesktopApp()) {
         navigate("/download-app");

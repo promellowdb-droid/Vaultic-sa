@@ -2,9 +2,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client.js";
 import { useVault } from "../state/VaultContext.jsx";
+import AdminIPhoneLock from "../components/AdminIPhoneLock.jsx";
 
 export default function Admin() {
   const { user } = useVault();
+
+  // Contrôle du Code PIN Admin (style iPhone)
+  const [pinStatus, setPinStatus] = useState(null); // { hasPin, isUnlocked }
+  const [pinChecking, setPinChecking] = useState(true);
 
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
@@ -45,14 +50,33 @@ export default function Admin() {
       setReviews(r.reviews || []);
       setReviewsStats({ average: r.average, total: r.total || 0 });
     } catch (err) {
+      if (err.message && err.message.includes("PIN")) {
+        setPinStatus((prev) => ({ ...prev, isUnlocked: false }));
+        return;
+      }
       setError(err.message || "Erreur d'accès au panneau d'administration.");
     } finally {
       setLoading(false);
     }
   }
 
+  async function checkPinStatus() {
+    setPinChecking(true);
+    try {
+      const res = await api.getAdminPinStatus();
+      setPinStatus(res);
+      if (res.isUnlocked) {
+        loadAdminData();
+      }
+    } catch (err) {
+      setError(err.message || "Erreur de vérification des accès.");
+    } finally {
+      setPinChecking(false);
+    }
+  }
+
   useEffect(() => {
-    loadAdminData();
+    checkPinStatus();
   }, []);
 
   function notify(msg) {
@@ -224,6 +248,31 @@ export default function Admin() {
     u.lastIp.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Écran de chargement initial
+  if (pinChecking) {
+    return (
+      <div className="ios-lock-backdrop">
+        <div className="ios-lock-loading">
+          <div className="ios-lock-spinner" />
+          <p>Initialisation de la sécurité Admin…</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Écran de verrouillage / configuration PIN style iPhone
+  if (!pinStatus?.isUnlocked) {
+    return (
+      <AdminIPhoneLock
+        hasPin={pinStatus?.hasPin}
+        onUnlocked={() => {
+          setPinStatus({ hasPin: true, isUnlocked: true });
+          loadAdminData();
+        }}
+      />
+    );
+  }
+
   return (
     <div className="admin-page-wrapper">
       {/* NAVBAR ADMIN */}
@@ -251,6 +300,13 @@ export default function Admin() {
               className={`btn-admin-toggle ${stats?.registrationsEnabled ? "active" : "disabled"}`}
             >
               Inscriptions : {stats?.registrationsEnabled ? "OUVERTES" : "FERMÉES"}
+            </button>
+            <button
+              onClick={() => setPinStatus((prev) => ({ ...prev, isUnlocked: false }))}
+              className="btn-admin-lock"
+              title="Verrouiller la console avec votre code PIN style iPhone"
+            >
+              🔒 Verrouiller
             </button>
             <Link to="/dashboard" className="btn-nav-vault">
               <span>Mon Coffre</span>

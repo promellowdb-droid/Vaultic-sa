@@ -1,4 +1,5 @@
 import { db } from "../db/connection.js";
+import argon2 from "argon2";
 
 export function getAdminStats(req, res) {
   const usersCount = db.prepare("SELECT COUNT(*) as count FROM users").get().count;
@@ -252,4 +253,56 @@ export function toggleRegistrations(req, res) {
   db.prepare("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('registrations_enabled', ?)").run(val);
 
   res.json({ registrationsEnabled: enabled });
+}
+
+// Statut du code PIN Admin (style iPhone)
+export function getAdminPinStatus(req, res) {
+  const pinSetting = db.prepare("SELECT value FROM app_settings WHERE key = 'admin_pin'").get();
+  res.json({
+    hasPin: !!(pinSetting && pinSetting.value),
+    isUnlocked: !!req.session.adminPinUnlocked,
+  });
+}
+
+// Configuration initiale du code PIN Admin (une seule fois)
+export async function setupAdminPin(req, res) {
+  const { pin } = req.body;
+  const pinSetting = db.prepare("SELECT value FROM app_settings WHERE key = 'admin_pin'").get();
+
+  if (pinSetting && pinSetting.value) {
+    return res.status(400).json({ error: "Un code de sécurité Administrateur est déjà configuré." });
+  }
+
+  if (!pin || pin.length < 4 || pin.length > 8 || !/^\d+$/.test(pin)) {
+    return res.status(400).json({ error: "Le code doit comporter entre 4 et 8 chiffres." });
+  }
+
+  const hash = await argon2.hash(pin, { type: argon2.argon2id });
+  db.prepare("INSERT OR REPLACE INTO app_settings (key, value) VALUES ('admin_pin', ?)").run(hash);
+  req.session.adminPinUnlocked = true;
+
+  res.json({ status: "ok", message: "Code de sécurité configuré avec succès !" });
+}
+
+// Vérification du code PIN Admin (style iPhone)
+export async function verifyAdminPin(req, res) {
+  const { pin } = req.body;
+  const pinSetting = db.prepare("SELECT value FROM app_settings WHERE key = 'admin_pin'").get();
+
+  if (!pinSetting || !pinSetting.value) {
+    req.session.adminPinUnlocked = true;
+    return res.json({ status: "ok", message: "Aucun code configuré." });
+  }
+
+  if (!pin) {
+    return res.status(400).json({ error: "Code requis." });
+  }
+
+  const valid = await argon2.verify(pinSetting.value, pin);
+  if (!valid) {
+    return res.status(401).json({ error: "Code d'accès incorrect." });
+  }
+
+  req.session.adminPinUnlocked = true;
+  res.json({ status: "ok", message: "Console déverrouillée." });
 }

@@ -106,6 +106,23 @@ export const api = {
     }),
 
   // API Administration
+  getAdminPinStatus: () =>
+    request("/admin/pin-status", {
+      method: "GET",
+    }),
+
+  setupAdminPin: (pin) =>
+    request("/admin/setup-pin", {
+      method: "POST",
+      body: JSON.stringify({ pin }),
+    }),
+
+  verifyAdminPin: (pin) =>
+    request("/admin/verify-pin", {
+      method: "POST",
+      body: JSON.stringify({ pin }),
+    }),
+
   getAdminStats: () =>
     request("/admin/stats", {
       method: "GET",

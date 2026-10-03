@@ -3544,3 +3544,247 @@ input {
   overflow-x: auto;
   margin-top: 1rem;
 }
+
+
+/* ==========================================================================
+   APPLE IPHONE PASSCODE LOCK SCREEN (Console Admin)
+   ========================================================================== */
+
+.ios-lock-backdrop {
+  min-height: 100vh;
+  width: 100vw;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(circle at 50% 25%, #15182e 0%, #05060b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  user-select: none;
+}
+
+.ios-lock-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 360px;
+  width: 100%;
+  animation: iosFadeIn 0.35s ease;
+}
+
+@keyframes iosFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ios-shake {
+  animation: iosShake 0.45s ease-in-out;
+}
+
+@keyframes iosShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-14px); }
+  40% { transform: translateX(12px); }
+  60% { transform: translateX(-8px); }
+  80% { transform: translateX(6px); }
+}
+
+.ios-lock-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 0 25px rgba(101, 113, 255, 0.2);
+}
+
+.ios-lock-title {
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.ios-lock-sub {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  margin-bottom: 2rem;
+  max-width: 290px;
+  line-height: 1.45;
+}
+
+.ios-dots-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 1.8rem;
+}
+
+.ios-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  background: transparent;
+  transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ios-dot.filled {
+  background: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  transform: scale(1.08);
+}
+
+.ios-dot.error {
+  background: #ef4444;
+  border-color: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
+}
+
+.ios-error-text {
+  font-size: 0.85rem;
+  color: #f87171;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.ios-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 76px);
+  gap: 16px 24px;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.ios-key-btn {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.12s ease, transform 0.1s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+}
+
+.ios-key-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.ios-key-btn:active {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0.94);
+}
+
+.ios-key-num {
+  font-size: 2rem;
+  font-weight: 350;
+  line-height: 1;
+  color: #fff;
+}
+
+.ios-key-sub {
+  font-size: 0.58rem;
+  letter-spacing: 1.8px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.ios-key-text {
+  width: 76px;
+  height: 76px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+  font-family: inherit;
+}
+
+.ios-key-text:hover:not(:disabled) {
+  color: #fff;
+}
+
+.ios-key-text:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.ios-key-empty {
+  width: 76px;
+  height: 76px;
+}
+
+.btn-admin-lock {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+.btn-admin-lock:hover {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+.ios-lock-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.ios-lock-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--theme-color);
+  border-radius: 50%;
+  animation: iosSpin 0.7s linear infinite;
+}
+
+@keyframes iosSpin {
+  to { transform: rotate(360deg); }
+}
