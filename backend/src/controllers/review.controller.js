@@ -57,9 +57,26 @@ export function addReview(req, res) {
   res.json({ status: "ok", message: "Votre avis a été publié. Merci !" });
 }
 
-// DELETE /api/reviews/:id — admin uniquement, supprimer un avis
+// DELETE /api/reviews/:id — admin ou auteur uniquement, supprimer un avis
 export function deleteReview(req, res) {
   const { id } = req.params;
+  const userId = req.session.userId;
+  const isAdmin = req.session.isAdmin;
+
+  if (!userId) {
+    return res.status(401).json({ error: "Non authentifié." });
+  }
+
+  const review = db.prepare("SELECT * FROM reviews WHERE id = ?").get(Number(id));
+  if (!review) {
+    return res.status(404).json({ error: "Avis introuvable." });
+  }
+
+  // Seul l'administrateur ou l'auteur peut supprimer l'avis
+  if (!isAdmin && review.user_id !== userId) {
+    return res.status(403).json({ error: "Accès refusé. Réservé à l'administrateur." });
+  }
+
   db.prepare("DELETE FROM reviews WHERE id = ?").run(Number(id));
-  res.json({ status: "ok", message: "Avis supprimé." });
+  res.json({ status: "ok", message: "Avis supprimé avec succès." });
 }

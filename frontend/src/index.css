@@ -3524,3 +3524,23 @@ input {
   font-family: inherit;
   padding: 0;
 }
+
+
+/* ==========================================================================
+   CONSOLE ADMIN — SECTION AVIS
+   ========================================================================== */
+
+.admin-reviews-badge {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.admin-reviews-table-wrapper {
+  overflow-x: auto;
+  margin-top: 1rem;
+}

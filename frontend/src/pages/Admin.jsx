@@ -9,6 +9,8 @@ export default function Admin() {
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
   const [bannedIps, setBannedIps] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [reviewsStats, setReviewsStats] = useState({ average: null, total: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
@@ -31,14 +33,17 @@ export default function Admin() {
     setLoading(true);
     setError(null);
     try {
-      const [s, u, b] = await Promise.all([
+      const [s, u, b, r] = await Promise.all([
         api.getAdminStats(),
         api.getAdminUsers(),
         api.getBannedIps(),
+        api.getReviews(),
       ]);
       setStats(s);
       setUsers(u);
       setBannedIps(b);
+      setReviews(r.reviews || []);
+      setReviewsStats({ average: r.average, total: r.total || 0 });
     } catch (err) {
       setError(err.message || "Erreur d'accès au panneau d'administration.");
     } finally {
@@ -200,6 +205,20 @@ export default function Admin() {
     }
   }
 
+  // SUPPRIMER UN AVIS CLIENT
+  async function handleDeleteReview(reviewId, authorName) {
+    const ok = window.confirm(`Supprimer définitivement l'avis de ${authorName} ?`);
+    if (!ok) return;
+
+    try {
+      const res = await api.deleteReview(reviewId);
+      notify(res.message || "Avis supprimé avec succès.");
+      loadAdminData();
+    } catch (err) {
+      alert("Erreur : " + err.message);
+    }
+  }
+
   const filteredUsers = users.filter((u) =>
     u.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
     u.lastIp.toLowerCase().includes(searchQuery.toLowerCase())
@@ -288,6 +307,12 @@ export default function Admin() {
               <div className="stat-label">IP Bloquées</div>
               <div className="stat-val red">{stats.bannedCount}</div>
               <div className="stat-note">Liste noire pare-feu</div>
+            </div>
+
+            <div className="admin-stat-card">
+              <div className="stat-label">Avis Clients</div>
+              <div className="stat-val">{reviewsStats.total}</div>
+              <div className="stat-note">{reviewsStats.average ? `Moyenne : ${reviewsStats.average} / 5 ⭐` : "Aucun avis publié"}</div>
             </div>
           </div>
         )}
@@ -498,6 +523,81 @@ export default function Admin() {
                   </button>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+
+        {/* SECTION 3 : GESTION & MODÉRATION DES AVIS CLIENTS */}
+        <div className="admin-section-box">
+          <div className="section-head-bar">
+            <div>
+              <h2>Gestion des Avis Clients ({reviews.length})</h2>
+              <p className="admin-subtext">Consultez les retours des utilisateurs et supprimez directement les avis inappropriés ou de test.</p>
+            </div>
+            {reviewsStats.average && (
+              <div className="admin-reviews-badge">
+                ⭐ Note moyenne : <strong>{reviewsStats.average} / 5</strong> ({reviewsStats.total} avis)
+              </div>
+            )}
+          </div>
+
+          {reviews.length === 0 ? (
+            <p className="empty-hint">Aucun avis publié pour le moment sur le site web.</p>
+          ) : (
+            <div className="admin-reviews-table-wrapper">
+              <table className="admin-users-table">
+                <thead>
+                  <tr>
+                    <th>Auteur</th>
+                    <th>Note</th>
+                    <th>Date</th>
+                    <th>Commentaire</th>
+                    <th style={{ textAlign: "right" }}>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reviews.map((r) => (
+                    <tr key={r.id}>
+                      <td>
+                        <strong>{r.username}</strong>
+                      </td>
+                      <td>
+                        <span style={{ color: "#f59e0b", fontSize: "1.1rem" }}>
+                          {"★".repeat(r.rating)}
+                        </span>
+                        <span style={{ color: "#555", fontSize: "0.85rem", marginLeft: "0.35rem" }}>
+                          ({r.rating}/5)
+                        </span>
+                      </td>
+                      <td>
+                        <span className="login-date-text">
+                          {new Date(r.created_at).toLocaleDateString("fr-FR", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </td>
+                      <td style={{ maxWidth: "400px" }}>
+                        <p style={{ margin: 0, color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: "1.5" }}>
+                          {r.content}
+                        </p>
+                      </td>
+                      <td style={{ textAlign: "right" }}>
+                        <button
+                          onClick={() => handleDeleteReview(r.id, r.username)}
+                          className="btn-action-danger"
+                          title="Supprimer définitivement cet avis"
+                        >
+                          🗑️ Supprimer
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>

@@ -76,4 +76,9 @@ db.exec(`
   );
 `);
 
+// Suppression de l'avis de test demandé
+try {
+  db.exec("DELETE FROM reviews WHERE id = 1");
+} catch {}
+
 console.log("Base de données initialisée avec support Admin, IP et Avis :", dbPath);
