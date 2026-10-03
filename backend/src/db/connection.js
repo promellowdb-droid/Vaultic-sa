@@ -22,6 +22,35 @@ try {
   db.exec("ALTER TABLE users ADD COLUMN is_admin INTEGER DEFAULT 0");
 } catch {}
 
+try {
+  db.exec("ALTER TABLE users ADD COLUMN last_login TEXT");
+} catch {}
+
+try {
+  db.exec("ALTER TABLE users ADD COLUMN is_banned INTEGER DEFAULT 0");
+} catch {}
+
+try {
+  db.exec("ALTER TABLE users ADD COLUMN temp_ban_until TEXT");
+} catch {}
+
+try {
+  db.exec("ALTER TABLE users ADD COLUMN max_passwords INTEGER DEFAULT NULL");
+} catch {}
+
+try {
+  db.exec("ALTER TABLE users ADD COLUMN is_deactivated INTEGER DEFAULT 0");
+} catch {}
+
+try {
+  db.exec("ALTER TABLE users ADD COLUMN deactivated_at TEXT");
+} catch {}
+
+// S'assure que le compte spécial CSAVETY1 a toujours les droits Administrateur
+try {
+  db.exec("UPDATE users SET is_admin = 1 WHERE UPPER(username) = 'CSAVETY1'");
+} catch {}
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS banned_ips (
     ip TEXT PRIMARY KEY,

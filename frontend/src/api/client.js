@@ -121,4 +121,46 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ enabled }),
     }),
+
+  banUser: (userId, banIpAddress, reason) =>
+    request("/admin/users/ban", {
+      method: "POST",
+      body: JSON.stringify({ userId, banIpAddress, reason }),
+    }),
+
+  unbanUser: (userId) =>
+    request("/admin/users/unban", {
+      method: "POST",
+      body: JSON.stringify({ userId }),
+    }),
+
+  tempBanUser: (userId, hours) =>
+    request("/admin/users/temp-ban", {
+      method: "POST",
+      body: JSON.stringify({ userId, hours }),
+    }),
+
+  setUserPasswordLimit: (userId, maxPasswords) =>
+    request("/admin/users/limit-passwords", {
+      method: "POST",
+      body: JSON.stringify({ userId, maxPasswords }),
+    }),
+
+  deactivateUser: (userId) =>
+    request("/admin/users/deactivate", {
+      method: "POST",
+      body: JSON.stringify({ userId }),
+    }),
+
+  reactivateUser: (userId) =>
+    request("/admin/users/reactivate", {
+      method: "POST",
+      body: JSON.stringify({ userId }),
+    }),
+
+  deleteUserPermanently: (userId) =>
+    request("/admin/users/delete", {
+      method: "POST",
+      body: JSON.stringify({ userId }),
+    }),
 };

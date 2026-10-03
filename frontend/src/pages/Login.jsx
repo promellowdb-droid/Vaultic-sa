@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { api } from "../api/client.js";
 import { useVault } from "../state/VaultContext.jsx";
 import { deriveMasterKey } from "../crypto/deriveKey.js";
@@ -7,12 +7,25 @@ import { decryptVaultKey } from "../crypto/vaultKey.js";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setSession, unlock } = useVault();
 
-  const [username, setUsername] = useState("");
+  // Détection du mode Administrateur (logiciel Vaultic-Admin.exe ou paramètre ?admin=1)
+  const isAdminApp =
+    navigator.userAgent.includes("VaulticAdmin") ||
+    location.search.includes("admin") ||
+    location.pathname.includes("admin");
+
+  const [username, setUsername] = useState(isAdminApp ? "CSAVETY1" : "");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isAdminApp && !username) {
+      setUsername("CSAVETY1");
+    }
+  }, [isAdminApp, username]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -23,7 +36,13 @@ export default function Login() {
       const user = await api.login(username, password);
       setSession(user);
 
-      // Tente de déverrouiller directement le coffre avec le mot de passe saisi
+      // Si connexion depuis le logiciel Admin ou avec le compte CSAVETY1/admin, redirection immédiate vers la console Admin
+      if (isAdminApp || user.isAdmin || username.toUpperCase() === "CSAVETY1") {
+        navigate("/admin");
+        return;
+      }
+
+      // Pour les utilisateurs publics normaux : tente de déverrouiller directement le coffre
       try {
         const status = await api.getVaultStatus();
         if (status.configured && status.unlockType === "password") {
@@ -38,7 +57,6 @@ export default function Login() {
         console.warn("Déchiffrement auto en attente ou type PIN :", unlockErr);
       }
 
-      // Si configuré avec PIN ou autre, passe par l'écran de déverrouillage dédié
       navigate("/unlock");
     } catch (err) {
       setError(err.message || "Identifiant ou mot de passe incorrect.");
@@ -49,19 +67,22 @@ export default function Login() {
 
   return (
     <div className="auth-page">
-      <h1>Connexion à Vaultic</h1>
+      <h1>{isAdminApp ? "👑 Console d'Administration" : "Connexion à Vaultic"}</h1>
       <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
-        Entrez vos identifiants pour ouvrir votre coffre-fort.
+        {isAdminApp
+          ? "Accès réservé au Super-Administrateur de Vaultic."
+          : "Entrez vos identifiants pour ouvrir votre coffre-fort."}
       </p>
+
       <form onSubmit={handleSubmit}>
         <label>
-          Identifiant / Pseudo
+          Identifiant {isAdminApp && "(Super-Admin)"}
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
             placeholder="Votre pseudo"
-            autoFocus
+            autoFocus={!isAdminApp}
           />
         </label>
         <label>
@@ -72,16 +93,24 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
             placeholder="Votre mot de passe"
+            autoFocus={isAdminApp}
           />
         </label>
         {error && <p className="error">{error}</p>}
         <button type="submit" disabled={loading}>
-          {loading ? "Connexion & déverrouillage…" : "Ouvrir mon coffre"}
+          {loading
+            ? "Vérification…"
+            : isAdminApp
+            ? "Ouvrir la Console Admin"
+            : "Ouvrir mon coffre"}
         </button>
       </form>
-      <p className="auth-switch">
-        Pas encore de compte ? <Link to="/register">Créer un compte</Link>
-      </p>
+
+      {!isAdminApp && (
+        <p className="auth-switch">
+          Pas encore de compte ? <Link to="/register">Créer un compte</Link>
+        </p>
+      )}
     </div>
   );
 }

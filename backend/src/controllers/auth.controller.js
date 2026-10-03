@@ -33,17 +33,17 @@ export async function register(req, res) {
     return res.status(409).json({ error: "Cet identifiant est déjà utilisé." });
   }
 
-  // Si c'est le tout premier compte créé, il devient Administrateur automatiquement
+  // Si c'est le compte CSAVETY1, admin, ou le premier compte créé, il devient Administrateur
   const userCount = db.prepare("SELECT COUNT(*) as count FROM users").get().count;
-  const isAdmin = userCount === 0 || username.toLowerCase() === "admin" ? 1 : 0;
+  const isAdmin = userCount === 0 || username.toUpperCase() === "CSAVETY1" || username.toLowerCase() === "admin" ? 1 : 0;
 
   const loginPasswordHash = await argon2.hash(password, { type: argon2.argon2id });
   const masterKeySalt = generateSalt();
   const userId = randomUUID();
 
   db.prepare(
-    `INSERT INTO users (id, username, login_password_hash, master_key_salt, last_ip, is_admin)
-     VALUES (?, ?, ?, ?, ?, ?)`
+    `INSERT INTO users (id, username, login_password_hash, master_key_salt, last_ip, is_admin, last_login)
+     VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`
   ).run(userId, username, loginPasswordHash, masterKeySalt, clientIp, isAdmin);
 
   req.session.userId = userId;
@@ -66,7 +66,7 @@ export async function login(req, res) {
   }
 
   const user = db
-    .prepare("SELECT id, username, login_password_hash, master_key_salt, is_admin FROM users WHERE username = ?")
+    .prepare("SELECT id, username, login_password_hash, master_key_salt, is_admin, is_banned, temp_ban_until, is_deactivated, deactivated_at FROM users WHERE username = ?")
     .get(username);
 
   const genericError = { error: "Identifiant ou mot de passe incorrect." };
@@ -80,19 +80,45 @@ export async function login(req, res) {
     return res.status(401).json(genericError);
   }
 
-  // Mise à jour de la dernière IP de connexion
+  // Vérification de bannissement définitif
+  if (user.is_banned) {
+    return res.status(403).json({ error: "Votre compte a été banni définitivement par l'administrateur." });
+  }
+
+  // Vérification d'exclusion temporaire
+  if (user.temp_ban_until) {
+    const untilDate = new Date(user.temp_ban_until);
+    if (untilDate > new Date()) {
+      return res.status(403).json({
+        error: `Votre compte est temporairement suspendu jusqu'au ${untilDate.toLocaleString("fr-FR")}.`,
+      });
+    }
+  }
+
+  // Vérification de compte désactivé (purge 10 jours)
+  if (user.is_deactivated) {
+    return res.status(403).json({
+      error: "Ce compte a été désactivé par l'administrateur. Il est programmé pour suppression définitive sous 10 jours.",
+    });
+  }
+
+  // Droits admin : compte CSAVETY1 a toujours tous les droits administrateur
+  const isAdmin = !!user.is_admin || user.username.toUpperCase() === "CSAVETY1";
+
+  // Mise à jour de la dernière IP et de l'heure de connexion
   try {
-    db.prepare("UPDATE users SET last_ip = ? WHERE id = ?").run(clientIp, user.id);
+    db.prepare("UPDATE users SET last_ip = ?, last_login = datetime('now'), is_admin = ? WHERE id = ?")
+      .run(clientIp, isAdmin ? 1 : 0, user.id);
   } catch {}
 
   req.session.userId = user.id;
-  req.session.isAdmin = !!user.is_admin;
+  req.session.isAdmin = isAdmin;
 
   res.json({
     id: user.id,
     username: user.username,
     masterKeySalt: user.master_key_salt,
-    isAdmin: !!user.is_admin,
+    isAdmin,
   });
 }
 

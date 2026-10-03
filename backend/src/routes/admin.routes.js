@@ -7,6 +7,13 @@ import {
   banIp,
   unbanIp,
   toggleRegistrations,
+  banUser,
+  unbanUser,
+  tempBanUser,
+  setUserPasswordLimit,
+  deactivateUser,
+  reactivateUser,
+  deleteUserPermanently,
 } from "../controllers/admin.controller.js";
 
 export const adminRouter = Router();
@@ -28,3 +35,12 @@ adminRouter.get("/banned-ips", listBannedIps);
 adminRouter.post("/ban-ip", banIp);
 adminRouter.post("/unban-ip", unbanIp);
 adminRouter.post("/toggle-registrations", toggleRegistrations);
+
+// Nouvelles actions de gestion avancée des utilisateurs
+adminRouter.post("/users/ban", banUser);
+adminRouter.post("/users/unban", unbanUser);
+adminRouter.post("/users/temp-ban", tempBanUser);
+adminRouter.post("/users/limit-passwords", setUserPasswordLimit);
+adminRouter.post("/users/deactivate", deactivateUser);
+adminRouter.post("/users/reactivate", reactivateUser);
+adminRouter.post("/users/delete", deleteUserPermanently);

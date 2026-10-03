@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useVault } from "../state/VaultContext.jsx";
+import { useLanguage } from "../i18n/LanguageContext.jsx";
+import LanguageSwitcher from "../components/LanguageSwitcher.jsx";
 
 export default function Landing() {
   const navigate = useNavigate();
   const { isAuthenticated, isUnlocked } = useVault();
+  const { t, lang } = useLanguage();
+
   const [openFaq, setOpenFaq] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
@@ -27,7 +31,28 @@ export default function Landing() {
     }
   }, [navigate, destinationVault]);
 
-  const faqs = [
+  const faqs = lang === "en" ? [
+    {
+      q: "What is Vaultic?",
+      a: "Vaultic is a modern, confidential password manager. It allows you to store, generate, and retrieve all your credentials in one click across desktop and mobile devices.",
+    },
+    {
+      q: "Are my passwords truly protected?",
+      a: "Yes, completely. Your data is protected by mathematical end-to-end security. Nobody else has access to your credentials.",
+    },
+    {
+      q: "How do I install Vaultic on Windows?",
+      a: "You can download and run Vaultic directly as a standalone Windows application without needing to open your web browser.",
+    },
+    {
+      q: "How do I install Vaultic on my phone (iPhone & Android)?",
+      a: "Open vaultic-sa.fr on your phone, tap 'Share' (Safari) or menu options (Chrome), then tap 'Add to Home Screen'. The app will launch directly into your vault!",
+    },
+    {
+      q: "Can I customize the vault appearance?",
+      a: "Yes! In your vault settings, you can pick your favorite neon accent color and dark mode theme.",
+    },
+  ] : [
     {
       q: "Qu'est-ce que Vaultic ?",
       a: "Vaultic est un gestionnaire de mots de passe moderne et confidentiel. Il vous permet de stocker, générer et retrouver tous vos identifiants en un clic sur votre ordinateur et votre smartphone.",
@@ -52,18 +77,18 @@ export default function Landing() {
 
   return (
     <div className="theme-shop-wrapper">
-      {/* 3D FLOATING SHAPES DU THEME (Formes décoratives avec accessibilité a11y) */}
+      {/* 3D FLOATING SHAPES DU THEME */}
       <div className="shapes-container" aria-hidden="true">
-        <img src="https://i.ibb.co/hRQSLmLk/3d-0.webp" className="elegant-shape shape-1" alt="Forme géométrique 3D néon en apesanteur" loading="lazy" />
-        <img src="https://i.ibb.co/M4JkzKd/3d-1.webp" className="elegant-shape shape-2" alt="Élément géométrique abstrait 3D" loading="lazy" />
-        <img src="https://i.ibb.co/Xxt3c2nt/3d-2.webp" className="elegant-shape shape-3" alt="Objet 3D futuriste flottant" loading="lazy" />
-        <img src="https://i.ibb.co/YBV0n1Xh/3d-3.webp" className="elegant-shape shape-4" alt="Capsule technologique 3D" loading="lazy" />
-        <img src="https://i.ibb.co/hRQSLmLk/3d-0.webp" className="elegant-shape shape-5" alt="Forme néon d'arrière-plan 3D" loading="lazy" />
+        <img src="https://i.ibb.co/hRQSLmLk/3d-0.webp" className="elegant-shape shape-1" alt="" loading="lazy" />
+        <img src="https://i.ibb.co/M4JkzKd/3d-1.webp" className="elegant-shape shape-2" alt="" loading="lazy" />
+        <img src="https://i.ibb.co/Xxt3c2nt/3d-2.webp" className="elegant-shape shape-3" alt="" loading="lazy" />
+        <img src="https://i.ibb.co/YBV0n1Xh/3d-3.webp" className="elegant-shape shape-4" alt="" loading="lazy" />
+        <img src="https://i.ibb.co/hRQSLmLk/3d-0.webp" className="elegant-shape shape-5" alt="" loading="lazy" />
       </div>
 
       {/* TOP ANNOUNCEMENT BAR */}
       <div className="top-announcement">
-        <span>⚡ VAULTIC — VOTRE GESTIONNAIRE DE MOTS DE PASSE PERSONNEL</span>
+        <span>{t("topAnnouncement")}</span>
       </div>
 
       {/* NAVBAR */}
@@ -83,26 +108,30 @@ export default function Landing() {
           </Link>
 
           <nav className="nav-menu" aria-label="Navigation principale">
-            <a href="#features">Fonctionnalités</a>
-            <a href="#pricing">Offres & Tarifs</a>
-            <a href="#download">Télécharger</a>
-            <a href="#faq">FAQ</a>
-            {isAuthenticated && <Link to="/admin" className="nav-admin-link">⚙ Admin</Link>}
+            <a href="#features">{t("navFeatures")}</a>
+            <a href="#pricing">{t("navPricing")}</a>
+            <a href="#download">{t("navDownload")}</a>
+            <a href="#faq">{t("navFaq")}</a>
+            {isAuthenticated && <Link to="/admin" className="nav-admin-link">{t("navAdmin")}</Link>}
           </nav>
 
           <div className="nav-cta-group">
+            {/* SÉLECTEUR DE LANGUE (FR / EN) */}
+            <LanguageSwitcher />
+
             <a href="/download/windows" className="btn-nav-download" title="Télécharger le logiciel Windows">
               <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
                 <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
               </svg>
-              <span>Logiciel .exe</span>
+              <span>{t("navDownloadExe")}</span>
             </a>
+
             <Link to={destinationVault} className="btn-nav-vault">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
-              <span>{isAuthenticated ? "Mon Coffre" : "Se connecter"}</span>
+              <span>{isAuthenticated ? t("navMyVault") : t("navLogin")}</span>
             </Link>
           </div>
         </div>
@@ -112,22 +141,20 @@ export default function Landing() {
       <section className="theme-hero">
         <div className="gradient-bg"></div>
         <div className="hero-container">
-          {/* BADGE CAPSULE */}
           <div className="theme-hero-badge">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
-            <span>CONFIDENTIALITÉ & SÉCURITÉ GARANTIES</span>
+            <span>{t("heroBadge")}</span>
           </div>
 
           <h1 className="hero-headline">
-            Tous vos mots de passe. <br />
-            <span className="gradient-text">En toute sécurité, partout.</span>
+            {t("heroTitleLine1")} <br />
+            <span className="gradient-text">{t("heroTitleLine2")}</span>
           </h1>
 
           <p className="hero-subtext">
-            Vaultic protège vos identifiants, codes et données sensibles sur tous vos appareils.
-            Simple, rapide et 100% confidentiel.
+            {t("heroSubtext")}
           </p>
 
           <div className="hero-cta-buttons">
@@ -135,7 +162,7 @@ export default function Landing() {
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                 <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
               </svg>
-              <span>Télécharger pour Windows (.exe)</span>
+              <span>{t("heroBtnDownloadExe")}</span>
             </a>
 
             <Link to={destinationVault} className="theme-btn-secondary">
@@ -143,7 +170,7 @@ export default function Landing() {
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
-              <span>Ouvrir dans le navigateur</span>
+              <span>{t("heroBtnWeb")}</span>
             </Link>
           </div>
 
@@ -156,8 +183,8 @@ export default function Landing() {
                 </svg>
               </div>
               <div className="stat-content">
-                <div className="stat-number">100%</div>
-                <div className="stat-desc">Confidentialité Totale</div>
+                <div className="stat-number">{t("stat1Number")}</div>
+                <div className="stat-desc">{t("stat1Desc")}</div>
               </div>
             </div>
 
@@ -169,8 +196,8 @@ export default function Landing() {
                 </svg>
               </div>
               <div className="stat-content">
-                <div className="stat-number">Protection</div>
-                <div className="stat-desc">Données Inviolables</div>
+                <div className="stat-number">{t("stat2Number")}</div>
+                <div className="stat-desc">{t("stat2Desc")}</div>
               </div>
             </div>
 
@@ -182,8 +209,8 @@ export default function Landing() {
                 </svg>
               </div>
               <div className="stat-content">
-                <div className="stat-number">Multi-Écrans</div>
-                <div className="stat-desc">PC, Mobile & Web</div>
+                <div className="stat-number">{t("stat3Number")}</div>
+                <div className="stat-desc">{t("stat3Desc")}</div>
               </div>
             </div>
           </div>
@@ -201,10 +228,10 @@ export default function Landing() {
                 <line x1="9" y1="9" x2="9.01" y2="9" />
                 <line x1="15" y1="9" x2="15.01" y2="9" />
               </svg>
-              <span>FONCTIONNALITÉS ESSENTIELLES</span>
+              <span>{t("featuresBadge")}</span>
             </div>
-            <h2>Une protection simple pour tous vos comptes</h2>
-            <p>Tout ce dont vous avez besoin pour naviguer l'esprit serein au quotidien.</p>
+            <h2>{t("featuresTitle")}</h2>
+            <p>{t("featuresSub")}</p>
           </div>
 
           <div className="features-grid-3">
@@ -214,8 +241,8 @@ export default function Landing() {
                   <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                 </svg>
               </div>
-              <h3>Confidentialité Absolue</h3>
-              <p>Vos mots de passe restent strictement confidentiels. Vous seul détenez l'accès à vos données personnelles.</p>
+              <h3>{t("feature1Title")}</h3>
+              <p>{t("feature1Desc")}</p>
             </div>
 
             <div className="feature-card">
@@ -224,8 +251,8 @@ export default function Landing() {
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
               </div>
-              <h3>Sécurité de Pointe</h3>
-              <p>Protection moderne et robuste garantissant l'intégrité de vos informations sensibles contre toute tentative d'intrusion.</p>
+              <h3>{t("feature2Title")}</h3>
+              <p>{t("feature2Desc")}</p>
             </div>
 
             <div className="feature-card">
@@ -235,8 +262,8 @@ export default function Landing() {
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
               </div>
-              <h3>Déverrouillage Rapide</h3>
-              <p>Accédez à votre coffre en un instant avec votre mot de passe ou votre code personnalisé.</p>
+              <h3>{t("feature3Title")}</h3>
+              <p>{t("feature3Desc")}</p>
             </div>
 
             <div className="feature-card">
@@ -247,8 +274,8 @@ export default function Landing() {
                   <polyline points="17 11 19 13 23 9" />
                 </svg>
               </div>
-              <h3>Générateur Intelligent</h3>
-              <p>Générez en un clic des mots de passe robustes et uniques pour chacun de vos services web.</p>
+              <h3>{t("feature4Title")}</h3>
+              <p>{t("feature4Desc")}</p>
             </div>
 
             <div className="feature-card">
@@ -259,8 +286,8 @@ export default function Landing() {
                   <line x1="12" y1="22.08" x2="12" y2="12" />
                 </svg>
               </div>
-              <h3>Disponible en Logiciel</h3>
-              <p>Installez Vaultic comme un véritable logiciel indépendant sur votre ordinateur Windows.</p>
+              <h3>{t("feature5Title")}</h3>
+              <p>{t("feature5Desc")}</p>
             </div>
 
             <div className="feature-card">
@@ -271,8 +298,8 @@ export default function Landing() {
                   <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z" />
                 </svg>
               </div>
-              <h3>Synchronisation Directe</h3>
-              <p>Retrouvez vos comptes à jour en temps réel sur tous vos écrans en toute fluidité.</p>
+              <h3>{t("feature6Title")}</h3>
+              <p>{t("feature6Desc")}</p>
             </div>
           </div>
         </div>
@@ -287,100 +314,100 @@ export default function Landing() {
                 <line x1="12" y1="1" x2="12" y2="23" />
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
               </svg>
-              <span>NOS OFFRES & TARIFS</span>
+              <span>{t("pricingBadge")}</span>
             </div>
-            <h2>Une formule claire pour chaque besoin</h2>
-            <p>Profitez d'une protection de haut niveau pour vos accès personnels et professionnels.</p>
+            <h2>{t("pricingTitle")}</h2>
+            <p>{t("pricingSub")}</p>
           </div>
 
           <div className="pricing-grid-3">
             {/* OFFRE PERSONNELLE */}
             <div className="pricing-card">
               <div className="pricing-header">
-                <span className="pricing-pill">Pour 1 personne</span>
-                <h3>Personnelle</h3>
-                <p className="pricing-desc">Pour sécuriser tous vos comptes et appareils personnels au quotidien.</p>
+                <span className="pricing-pill">{t("planPersonalTarget")}</span>
+                <h3>{t("planPersonalTitle")}</h3>
+                <p className="pricing-desc">{t("planPersonalDesc")}</p>
                 <div className="pricing-price-box">
-                  <span className="price-amount">0 €</span>
-                  <span className="price-period">/ toujours gratuit</span>
+                  <span className="price-amount">{t("planPersonalPrice")}</span>
+                  <span className="price-period">{t("planPersonalPeriod")}</span>
                 </div>
               </div>
 
               <ul className="pricing-features">
-                <li><span className="check-icon">✓</span> Mots de passe illimités</li>
-                <li><span className="check-icon">✓</span> 1 utilisateur individuel</li>
-                <li><span className="check-icon">✓</span> Synchronisation PC, Mobile & Web</li>
-                <li><span className="check-icon">✓</span> Générateur de mots de passe forts</li>
-                <li><span className="check-icon">✓</span> Déverrouillage rapide par code</li>
-                <li><span className="check-icon">✓</span> Confidentialité totale garantie</li>
+                <li><span className="check-icon">✓</span> {t("planPersonalF1")}</li>
+                <li><span className="check-icon">✓</span> {t("planPersonalF2")}</li>
+                <li><span className="check-icon">✓</span> {t("planPersonalF3")}</li>
+                <li><span className="check-icon">✓</span> {t("planPersonalF4")}</li>
+                <li><span className="check-icon">✓</span> {t("planPersonalF5")}</li>
+                <li><span className="check-icon">✓</span> {t("planPersonalF6")}</li>
               </ul>
 
               <button
                 type="button"
-                onClick={() => setSelectedPlan("Personnelle")}
+                onClick={() => setSelectedPlan(t("planPersonalTitle"))}
                 className="btn-pricing-secondary"
               >
-                Démarrer gratuitement
+                {t("planPersonalBtn")}
               </button>
             </div>
 
             {/* OFFRE MICRO-ENTREPRISE */}
             <div className="pricing-card featured">
-              <div className="pricing-badge-popular">Offre de lancement</div>
+              <div className="pricing-badge-popular">{t("planMicroBadge")}</div>
               <div className="pricing-header">
-                <span className="pricing-pill">Freelances & Indépendants</span>
-                <h3>Micro-Entreprise</h3>
-                <p className="pricing-desc">Idéal pour les indépendants et professionnels ayant besoin d'une sécurité renforcée.</p>
+                <span className="pricing-pill">{t("planMicroTarget")}</span>
+                <h3>{t("planMicroTitle")}</h3>
+                <p className="pricing-desc">{t("planMicroDesc")}</p>
                 <div className="pricing-price-box">
-                  <span className="price-amount">0 €</span>
-                  <span className="price-period">/ Gratuit avant le 10 novembre</span>
+                  <span className="price-amount">{t("planMicroPrice")}</span>
+                  <span className="price-period">{t("planMicroPeriod")}</span>
                 </div>
               </div>
 
               <ul className="pricing-features">
-                <li><span className="check-icon">✓</span> Tout ce qui est inclus dans Personnelle</li>
-                <li><span className="check-icon">✓</span> Compartimentation Pro & Personnel</li>
-                <li><span className="check-icon">✓</span> Journal d'accès sécurisé</li>
-                <li><span className="check-icon">✓</span> Support prioritaire par courriel</li>
-                <li><span className="check-icon">✓</span> Accès anticipé aux nouveautés</li>
+                <li><span className="check-icon">✓</span> {t("planMicroF1")}</li>
+                <li><span className="check-icon">✓</span> {t("planMicroF2")}</li>
+                <li><span className="check-icon">✓</span> {t("planMicroF3")}</li>
+                <li><span className="check-icon">✓</span> {t("planMicroF4")}</li>
+                <li><span className="check-icon">✓</span> {t("planMicroF5")}</li>
               </ul>
 
               <button
                 type="button"
-                onClick={() => setSelectedPlan("Micro-Entreprise")}
+                onClick={() => setSelectedPlan(t("planMicroTitle"))}
                 className="btn-pricing-primary"
               >
-                Profiter de l'offre
+                {t("planMicroBtn")}
               </button>
             </div>
 
             {/* OFFRE ENTREPRISE */}
             <div className="pricing-card">
-              <div className="pricing-badge-limited">Accès Anticipé</div>
+              <div className="pricing-badge-limited">{t("planEnterpriseBadge")}</div>
               <div className="pricing-header">
-                <span className="pricing-pill">Équipes & Sociétés</span>
-                <h3>Entreprise</h3>
-                <p className="pricing-desc">Gestion centralisée et supervision avancée pour toute votre structure.</p>
+                <span className="pricing-pill">{t("planEnterpriseTarget")}</span>
+                <h3>{t("planEnterpriseTitle")}</h3>
+                <p className="pricing-desc">{t("planEnterpriseDesc")}</p>
                 <div className="pricing-price-box">
-                  <span className="price-amount">0 €</span>
-                  <span className="price-period">/ Gratuit jusqu'au 10 décembre</span>
+                  <span className="price-amount">{t("planEnterprisePrice")}</span>
+                  <span className="price-period">{t("planEnterprisePeriod")}</span>
                 </div>
               </div>
 
               <ul className="pricing-features">
-                <li><span className="check-icon">✓</span> Tout ce qui est inclus dans Micro-Entreprise</li>
-                <li><span className="check-icon">✓</span> Gestion centralisée multi-utilisateurs</li>
-                <li><span className="check-icon">✓</span> Console d'administration dédiée</li>
-                <li><span className="check-icon">✓</span> Filtrage et contrôle d'adresses IP</li>
-                <li><span className="check-icon">✓</span> Assistance et onboarding prioritaire</li>
+                <li><span className="check-icon">✓</span> {t("planEnterpriseF1")}</li>
+                <li><span className="check-icon">✓</span> {t("planEnterpriseF2")}</li>
+                <li><span className="check-icon">✓</span> {t("planEnterpriseF3")}</li>
+                <li><span className="check-icon">✓</span> {t("planEnterpriseF4")}</li>
+                <li><span className="check-icon">✓</span> {t("planEnterpriseF5")}</li>
               </ul>
 
               <button
                 type="button"
-                onClick={() => setSelectedPlan("Entreprise")}
+                onClick={() => setSelectedPlan(t("planEnterpriseTitle"))}
                 className="btn-pricing-secondary"
               >
-                Rejoindre l'accès anticipé
+                {t("planEnterpriseBtn")}
               </button>
             </div>
           </div>
@@ -394,28 +421,30 @@ export default function Landing() {
             <button className="choice-modal-close" onClick={() => setSelectedPlan(null)} aria-label="Fermer la fenêtre">✕</button>
 
             <div className="choice-modal-header">
-              <span className="pricing-pill">Formule {selectedPlan} sélectionnée</span>
-              <h2>Comment souhaitez-vous utiliser Vaultic ?</h2>
-              <p>Choisissez l'expérience qui correspond le mieux à votre utilisation pour commencer.</p>
+              <span className="pricing-pill">
+                {t("modalSelectedPrefix")} {selectedPlan} {t("modalSelectedSuffix")}
+              </span>
+              <h2>{t("modalHeaderTitle")}</h2>
+              <p>{t("modalHeaderSub")}</p>
             </div>
 
             <div className="choice-options-grid">
               {/* OPTION 1 : LOGICIEL WINDOWS .EXE (RECOMMANDÉ) */}
               <div className="choice-card-item highlight">
-                <div className="choice-badge-tag">★ Recommandé</div>
+                <div className="choice-badge-tag">{t("modalOption1Badge")}</div>
                 <div className="choice-icon-wrap">
                   <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor" aria-hidden="true">
                     <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
                   </svg>
                 </div>
-                <h3>Logiciel Windows (.exe)</h3>
-                <p>Application autonome et ultra-rapide. Fonctionne indépendamment de votre navigateur avec une sécurité maximale.</p>
+                <h3>{t("modalOption1Title")}</h3>
+                <p>{t("modalOption1Desc")}</p>
                 <a
                   href="/download/windows"
                   className="btn-modal-action-primary"
                   onClick={() => setSelectedPlan(null)}
                 >
-                  Télécharger le logiciel (.exe)
+                  {t("modalOption1Btn")}
                 </a>
               </div>
 
@@ -428,14 +457,14 @@ export default function Landing() {
                     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z" />
                   </svg>
                 </div>
-                <h3>Essayer la version Web</h3>
-                <p>Ouvrez votre coffre directement dans votre navigateur actuel en quelques secondes sans rien installer.</p>
+                <h3>{t("modalOption2Title")}</h3>
+                <p>{t("modalOption2Desc")}</p>
                 <Link
                   to="/register"
                   className="btn-modal-action-secondary"
                   onClick={() => setSelectedPlan(null)}
                 >
-                  Continuer sur le Web
+                  {t("modalOption2Btn")}
                 </Link>
               </div>
             </div>
@@ -446,24 +475,21 @@ export default function Landing() {
       {/* SECTION TÉLÉCHARGEMENT */}
       <section id="download" className="theme-download-section">
         <div className="download-card-banner">
-          <div className="download-badge">APPLICATION INSTALLABLE PC & MOBILE</div>
-          <h2>Téléchargez Vaultic sur tous vos appareils</h2>
-          <p>
-            Installez notre application Windows officielle ou ajoutez Vaultic à votre smartphone
-            en un instant pour un accès rapide sans ouvrir votre navigateur.
-          </p>
+          <div className="download-badge">{t("downloadBadge")}</div>
+          <h2>{t("downloadTitle")}</h2>
+          <p>{t("downloadDesc")}</p>
           <div className="download-actions">
             <a href="/download/windows" className="theme-btn-primary large">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
                 <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
               </svg>
-              <span>Télécharger pour Windows (.exe)</span>
+              <span>{t("downloadBtnExe")}</span>
             </a>
             <Link to={destinationVault} className="theme-btn-secondary">
-              <span>Utiliser la version Web</span>
+              <span>{t("downloadBtnWeb")}</span>
             </Link>
           </div>
-          <span className="download-compat">Compatible Windows 10 & 11 • Version Mobile pour iPhone et Android</span>
+          <span className="download-compat">{t("downloadCompat")}</span>
         </div>
       </section>
 
@@ -477,10 +503,10 @@ export default function Landing() {
                 <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
                 <line x1="12" y1="17" x2="12.01" y2="17" />
               </svg>
-              <span>QUESTIONS FRÉQUENTES</span>
+              <span>{t("faqBadge")}</span>
             </div>
-            <h2>Foire Aux Questions</h2>
-            <p>Tout ce que vous devez savoir pour démarrer simplement avec Vaultic.</p>
+            <h2>{t("faqTitle")}</h2>
+            <p>{t("faqSub")}</p>
           </div>
 
           <div className="faq-accordion">
@@ -514,43 +540,44 @@ export default function Landing() {
               <span className="logo-title">VAULTIC</span>
             </div>
             <p className="footer-tagline">
-              La solution simple et sécurisée pour gérer tous vos mots de passe au quotidien.
+              {t("footerTagline")}
             </p>
           </div>
 
           <div className="footer-links-side">
             <div className="footer-col">
-              <h4>Navigation</h4>
-              <a href="#features">Fonctionnalités</a>
-              <a href="#download">Télécharger</a>
-              <a href="#faq">Questions fréquentes</a>
+              <h4>{t("footerNavTitle")}</h4>
+              <a href="#features">{t("navFeatures")}</a>
+              <a href="#pricing">{t("navPricing")}</a>
+              <a href="#download">{t("navDownload")}</a>
+              <a href="#faq">{t("navFaq")}</a>
             </div>
             <div className="footer-col">
-              <h4>Légal & Sécurité</h4>
-              <Link to="/privacy">Confidentialité</Link>
-              <Link to="/terms">Conditions d'utilisation</Link>
-              <Link to="/cookies">Cookies</Link>
-              <Link to="/legal">Mentions Légales</Link>
+              <h4>{t("footerLegalTitle")}</h4>
+              <Link to="/privacy">{t("footerPrivacy")}</Link>
+              <Link to="/terms">{t("footerTerms")}</Link>
+              <Link to="/cookies">{t("footerCookies")}</Link>
+              <Link to="/legal">{t("footerLegal")}</Link>
             </div>
             <div className="footer-col">
-              <h4>Accès</h4>
-              <Link to="/login">Connexion</Link>
-              <Link to="/register">Créer un compte</Link>
-              <Link to="/dashboard">Mon Coffre</Link>
+              <h4>{t("footerAccessTitle")}</h4>
+              <Link to="/login">{t("navLogin")}</Link>
+              <Link to="/register">{t("footerCreateAccount")}</Link>
+              <Link to="/dashboard">{t("navMyVault")}</Link>
             </div>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} Vaultic. Tous droits réservés.</span>
+          <span>© {new Date().getFullYear()} Vaultic. {t("footerRights")}</span>
           <div className="footer-legal-links">
-            <Link to="/privacy">Données personnelles</Link>
+            <Link to="/privacy">{t("footerPrivacy")}</Link>
             <span>•</span>
-            <Link to="/cookies">Cookies</Link>
+            <Link to="/cookies">{t("footerCookies")}</Link>
             <span>•</span>
-            <Link to="/legal">Mentions légales</Link>
+            <Link to="/legal">{t("footerLegal")}</Link>
           </div>
-          <span className="footer-security-note">Confidentialité et sécurité garanties.</span>
+          <span className="footer-security-note">{t("footerSecurityNote")}</span>
         </div>
       </footer>
     </div>

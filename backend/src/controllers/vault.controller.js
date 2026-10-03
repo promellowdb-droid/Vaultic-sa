@@ -67,6 +67,17 @@ export function createEntry(req, res) {
     return res.status(400).json({ error: "Données d'entrée invalides." });
   }
 
+  // Vérification du quota imposé par l'administrateur
+  const user = db.prepare("SELECT max_passwords FROM users WHERE id = ?").get(userId);
+  if (user && user.max_passwords !== null && user.max_passwords !== undefined) {
+    const currentCount = db.prepare("SELECT COUNT(*) as count FROM vault_entries WHERE user_id = ?").get(userId).count;
+    if (currentCount >= user.max_passwords) {
+      return res.status(403).json({
+        error: `Quota atteint : votre compte est limité à un maximum de ${user.max_passwords} mot(s) de passe par l'administrateur.`,
+      });
+    }
+  }
+
   const entryId = randomUUID();
 
   db.prepare(
