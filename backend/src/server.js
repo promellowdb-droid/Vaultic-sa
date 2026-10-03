@@ -10,6 +10,7 @@ import { requireAuth } from "./middleware/requireAuth.middleware.js";
 import { authRouter } from "./routes/auth.routes.js";
 import { vaultRouter } from "./routes/vault.routes.js";
 import { adminRouter } from "./routes/admin.routes.js";
+import { reviewRouter } from "./routes/review.routes.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FRONTEND_DIST = path.join(__dirname, "../../frontend/dist");
@@ -52,6 +53,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/vault", vaultRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/reviews", reviewRouter);
 app.get("/api/whoami", requireAuth, (req, res) => {
   res.json({ userId: req.session.userId, isAdmin: !!req.session.isAdmin });
 });

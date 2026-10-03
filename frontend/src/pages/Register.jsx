@@ -5,6 +5,15 @@ import { useVault } from "../state/VaultContext.jsx";
 import { deriveMasterKey } from "../crypto/deriveKey.js";
 import { generateVaultKey, encryptVaultKey } from "../crypto/vaultKey.js";
 
+function isDesktopApp() {
+  return (
+    navigator.userAgent.includes("VaulticDesktop") ||
+    navigator.userAgent.includes("VaulticAdmin") ||
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone
+  );
+}
+
 export default function Register() {
   const navigate = useNavigate();
   const { setSession, unlock } = useVault();
@@ -37,12 +46,19 @@ export default function Register() {
       const user = await api.login(username, password);
       setSession(user);
 
-      // 3. Initialisation transparente et immédiate du coffre (zéro étape inutile)
+      // 3. Initialisation transparente et immédiate du coffre
       const masterKey = await deriveMasterKey(password, user.masterKeySalt);
       const vaultKey = await generateVaultKey();
       const { encryptedVaultKey, nonce } = await encryptVaultKey(vaultKey, masterKey);
       await api.storeVaultKey(encryptedVaultKey, nonce, "password");
 
+      // Sur navigateur web → proposer le téléchargement plutôt que le coffre
+      if (!isDesktopApp()) {
+        navigate("/download-app");
+        return;
+      }
+
+      // Sur l'application de bureau → déverrouiller directement
       unlock(vaultKey);
       navigate("/dashboard");
     } catch (err) {
@@ -56,7 +72,7 @@ export default function Register() {
     <div className="auth-page">
       <h1>Créer un compte Vaultic</h1>
       <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
-        Votre mot de passe protège l'accès à votre coffre en toute confidentialité.
+        Choisissez un pseudo et un mot de passe sécurisé pour protéger votre compte.
       </p>
       <form onSubmit={handleSubmit}>
         <label>
@@ -94,7 +110,7 @@ export default function Register() {
         </label>
         {error && <p className="error">{error}</p>}
         <button type="submit" disabled={loading}>
-          {loading ? "Création & initialisation…" : "Créer mon coffre"}
+          {loading ? "Création du compte…" : "Créer mon compte"}
         </button>
       </form>
       <p className="auth-switch">

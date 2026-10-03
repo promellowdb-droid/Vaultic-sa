@@ -88,6 +88,23 @@ export const api = {
       method: "DELETE",
     }),
 
+  // API Avis (Reviews)
+  getReviews: () =>
+    request("/reviews", {
+      method: "GET",
+    }),
+
+  addReview: (rating, content) =>
+    request("/reviews", {
+      method: "POST",
+      body: JSON.stringify({ rating, content }),
+    }),
+
+  deleteReview: (id) =>
+    request(`/reviews/${id}`, {
+      method: "DELETE",
+    }),
+
   // API Administration
   getAdminStats: () =>
     request("/admin/stats", {

@@ -104,11 +104,11 @@ export function unbanUser(req, res) {
   res.json({ status: "ok", message: "L'utilisateur a été débanni." });
 }
 
-// Exclusion temporaire (Timeout : 1h, 2h, 24h, 72h, etc.)
+// Exclusion temporaire (Timeout : 1h, 2h, 24h, 72h, etc.) — 0h = lever l'exclusion
 export function tempBanUser(req, res) {
   const { userId, hours } = req.body;
 
-  if (!userId || !hours || isNaN(hours) || Number(hours) <= 0) {
+  if (!userId || hours === undefined || hours === null || isNaN(hours)) {
     return res.status(400).json({ error: "Durée d'exclusion invalide (en heures)." });
   }
 
@@ -117,6 +117,15 @@ export function tempBanUser(req, res) {
 
   if (user.username.toUpperCase() === "CSAVETY1") {
     return res.status(403).json({ error: "Impossible d'exclure le compte Administrateur principal." });
+  }
+
+  // Si hours = 0, on lève l'exclusion immédiatement
+  if (Number(hours) <= 0) {
+    db.prepare("UPDATE users SET temp_ban_until = NULL WHERE id = ?").run(userId);
+    return res.json({
+      status: "ok",
+      message: `L'exclusion temporaire de ${user.username} a été levée.`,
+    });
   }
 
   db.prepare(

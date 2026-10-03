@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useVault } from "../state/VaultContext.jsx";
 import { useLanguage } from "../i18n/LanguageContext.jsx";
 import LanguageSwitcher from "../components/LanguageSwitcher.jsx";
+import ReviewsSection from "../components/ReviewsSection.jsx";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -103,7 +104,7 @@ export default function Landing() {
             </div>
             <div className="brand-titles-nav">
               <span className="logo-title">VAULTIC</span>
-              <span className="logo-badge-sa">PRO</span>
+              <span className="logo-badge-sa">SA</span>
             </div>
           </Link>
 
@@ -111,6 +112,7 @@ export default function Landing() {
             <a href="#features">{t("navFeatures")}</a>
             <a href="#pricing">{t("navPricing")}</a>
             <a href="#download">{t("navDownload")}</a>
+            <a href="#avis">Avis</a>
             <a href="#faq">{t("navFaq")}</a>
             {isAuthenticated && <Link to="/admin" className="nav-admin-link">{t("navAdmin")}</Link>}
           </nav>
@@ -119,20 +121,32 @@ export default function Landing() {
             {/* SÉLECTEUR DE LANGUE (FR / EN) */}
             <LanguageSwitcher />
 
-            <a href="/download/windows" className="btn-nav-download" title="Télécharger le logiciel Windows">
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
-                <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
-              </svg>
-              <span>{t("navDownloadExe")}</span>
-            </a>
-
-            <Link to={destinationVault} className="btn-nav-vault">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-              <span>{isAuthenticated ? t("navMyVault") : t("navLogin")}</span>
-            </Link>
+            {!isAuthenticated ? (
+              <>
+                <Link to="/login" className="btn-nav-login">
+                  {t("navLogin")}
+                </Link>
+                <Link to="/register" className="btn-nav-register">
+                  Créer un compte
+                </Link>
+              </>
+            ) : (
+              <>
+                <a href="/download/windows" className="btn-nav-download" title="Télécharger le logiciel Windows">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801" />
+                  </svg>
+                  <span>{t("navDownloadExe")}</span>
+                </a>
+                <Link to="/dashboard" className="btn-nav-vault">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  <span>{t("navMyVault")}</span>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -525,6 +539,9 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      {/* SECTION AVIS UTILISATEURS */}
+      <ReviewsSection />
 
       {/* FOOTER */}
       <footer className="theme-footer">

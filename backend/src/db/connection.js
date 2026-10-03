@@ -64,6 +64,16 @@ db.exec(`
   );
 
   INSERT OR IGNORE INTO app_settings (key, value) VALUES ('registrations_enabled', 'true');
+
+  CREATE TABLE IF NOT EXISTS reviews (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    username TEXT NOT NULL,
+    rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+    content TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
 `);
 
-console.log("Base de données initialisée avec support Admin & IP :", dbPath);
+console.log("Base de données initialisée avec support Admin, IP et Avis :", dbPath);

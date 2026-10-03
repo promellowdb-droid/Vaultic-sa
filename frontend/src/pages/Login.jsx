@@ -5,6 +5,16 @@ import { useVault } from "../state/VaultContext.jsx";
 import { deriveMasterKey } from "../crypto/deriveKey.js";
 import { decryptVaultKey } from "../crypto/vaultKey.js";
 
+// Détecte si c'est l'application de bureau (pas un navigateur web)
+function isDesktopApp() {
+  return (
+    navigator.userAgent.includes("VaulticDesktop") ||
+    navigator.userAgent.includes("VaulticAdmin") ||
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone
+  );
+}
+
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,13 +46,19 @@ export default function Login() {
       const user = await api.login(username, password);
       setSession(user);
 
-      // Si connexion depuis le logiciel Admin ou avec le compte CSAVETY1/admin, redirection immédiate vers la console Admin
+      // Admin → console admin directement
       if (isAdminApp || user.isAdmin || username.toUpperCase() === "CSAVETY1") {
         navigate("/admin");
         return;
       }
 
-      // Pour les utilisateurs publics normaux : tente de déverrouiller directement le coffre
+      // Sur navigateur web → proposer le téléchargement, pas le coffre
+      if (!isDesktopApp()) {
+        navigate("/download-app");
+        return;
+      }
+
+      // Sur l'application de bureau → déverrouiller le coffre automatiquement si possible
       try {
         const status = await api.getVaultStatus();
         if (status.configured && status.unlockType === "password") {
@@ -71,7 +87,7 @@ export default function Login() {
       <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
         {isAdminApp
           ? "Accès réservé au Super-Administrateur de Vaultic."
-          : "Entrez vos identifiants pour ouvrir votre coffre-fort."}
+          : "Entrez vos identifiants pour accéder à votre coffre."}
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -102,7 +118,7 @@ export default function Login() {
             ? "Vérification…"
             : isAdminApp
             ? "Ouvrir la Console Admin"
-            : "Ouvrir mon coffre"}
+            : "Se connecter"}
         </button>
       </form>
 

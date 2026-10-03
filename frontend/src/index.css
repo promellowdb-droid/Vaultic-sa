@@ -2965,3 +2965,562 @@ input {
   font-weight: 700;
   cursor: pointer;
 }
+
+
+/* ==========================================================================
+   SECTION AVIS UTILISATEURS (ReviewsSection)
+   ========================================================================== */
+
+.reviews-section {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.reviews-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.reviews-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.reviews-subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 540px;
+  margin: 0 auto 2rem;
+}
+
+.reviews-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(101, 113, 255, 0.08);
+  border: 1px solid rgba(101, 113, 255, 0.2);
+  border-radius: 9999px;
+  padding: 0.6rem 1.4rem;
+}
+
+.reviews-avg-score {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--theme-color);
+  line-height: 1;
+}
+
+.reviews-avg-stars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.reviews-total-count {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.reviews-action-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.btn-leave-review {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--theme-color);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.8rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  font-family: inherit;
+}
+
+.btn-leave-review:hover {
+  background: var(--theme-color-hover);
+  transform: translateY(-1px);
+}
+
+/* Formulaire d'avis */
+.review-form {
+  max-width: 640px;
+  margin: 0 auto 3rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.2rem;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review-form-rating {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.review-form-rating label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.review-textarea {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.9rem 1rem;
+  resize: vertical;
+  min-height: 100px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.review-textarea:focus {
+  border-color: var(--theme-color);
+}
+
+.review-form-footer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.review-char-count {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-right: auto;
+}
+
+.review-error {
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+.review-success {
+  font-size: 0.85rem;
+  color: var(--accent-emerald);
+}
+
+.btn-submit-review {
+  background: var(--theme-color);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.btn-submit-review:hover:not(:disabled) {
+  background: var(--theme-color-hover);
+}
+
+.btn-submit-review:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Étoiles */
+.star-rating {
+  display: flex;
+  gap: 0.1rem;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 1.35rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: transform 0.1s;
+  color: #333;
+}
+
+.star-btn:disabled {
+  cursor: default;
+}
+
+.star-btn.star-filled {
+  color: #f59e0b;
+}
+
+.star-btn.star-empty {
+  color: #3a3a3a;
+}
+
+.star-btn:not(:disabled):hover {
+  transform: scale(1.2);
+}
+
+/* Grille des avis */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.review-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.2rem;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.review-card:hover {
+  border-color: rgba(101, 113, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.review-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.review-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex: 1;
+}
+
+.review-username {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+}
+
+.review-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.review-content {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.reviews-loading,
+.reviews-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 3rem 0;
+  font-size: 1rem;
+}
+
+/* ==========================================================================
+   PAGE WEB ONLY (coffre non dispo sur navigateur)
+   ========================================================================== */
+
+.webonly-page {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.webonly-card {
+  max-width: 520px;
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.5rem;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.webonly-icon {
+  width: 80px;
+  height: 80px;
+  background: rgba(101, 113, 255, 0.1);
+  border: 1px solid rgba(101, 113, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-color);
+  margin-bottom: 0.5rem;
+}
+
+.webonly-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.webonly-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.webonly-sub {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.btn-download-webonly {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--theme-color);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.85rem 2rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-download-webonly:hover {
+  background: var(--theme-color-hover);
+  transform: translateY(-2px);
+}
+
+.webonly-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.webonly-back {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.webonly-back:hover {
+  color: var(--theme-color);
+}
+
+
+/* ==========================================================================
+   NAVBAR — BOUTONS SE CONNECTER / CRÉER UN COMPTE
+   ========================================================================== */
+
+.btn-nav-login {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.btn-nav-login:hover {
+  color: var(--text-primary);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.btn-nav-register {
+  display: inline-flex;
+  align-items: center;
+  background: var(--theme-color);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.45rem 1.1rem;
+  border-radius: 9999px;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.btn-nav-register:hover {
+  background: var(--theme-color-hover);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   PAGE DOWNLOAD APP (après connexion/inscription sur web)
+   ========================================================================== */
+
+.download-app-page {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.download-app-card {
+  max-width: 560px;
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.5rem;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.dapp-icon {
+  width: 90px;
+  height: 90px;
+  background: rgba(101, 113, 255, 0.1);
+  border: 1px solid rgba(101, 113, 255, 0.25);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-color);
+  margin-bottom: 0.25rem;
+}
+
+.dapp-welcome h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.dapp-username {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.dapp-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-width: 420px;
+}
+
+.btn-dapp-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: var(--theme-color);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.9rem 2rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  transition: background 0.2s, transform 0.15s;
+  position: relative;
+}
+
+.btn-dapp-download:hover {
+  background: var(--theme-color-hover);
+  transform: translateY(-2px);
+}
+
+.dapp-badge-free {
+  background: rgba(255,255,255,0.2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  margin-left: 0.25rem;
+}
+
+.dapp-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.dapp-mobile-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: rgba(56, 189, 248, 0.07);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 0.75rem;
+  padding: 0.9rem 1.1rem;
+  text-align: left;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  width: 100%;
+}
+
+.dapp-mobile-hint svg {
+  flex-shrink: 0;
+  color: var(--accent-cyan);
+  margin-top: 0.1rem;
+}
+
+.dapp-footer-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.dapp-link {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.dapp-link:hover {
+  color: var(--theme-color);
+}
+
+.dapp-link-btn {
+  background: none;
+  border: none;
+  font-family: inherit;
+  padding: 0;
+}

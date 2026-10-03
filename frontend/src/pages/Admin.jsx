@@ -81,11 +81,22 @@ export default function Admin() {
     }
   }
 
-  // DÉBANNIR
+  // DÉBANNIR (ban définitif)
   async function handleUnbanUser(userId) {
     try {
       const res = await api.unbanUser(userId);
       notify(res.message);
+      loadAdminData();
+    } catch (err) {
+      alert("Erreur : " + err.message);
+    }
+  }
+
+  // LEVER L'EXCLUSION TEMPORAIRE (reset temp_ban_until)
+  async function handleLiftTempBan(userId) {
+    try {
+      const res = await api.tempBanUser(userId, 0); // 0 heure = lever l'exclusion
+      notify(res.message || "Exclusion temporaire levée.");
       loadAdminData();
     } catch (err) {
       alert("Erreur : " + err.message);
@@ -382,13 +393,22 @@ export default function Admin() {
                               ⏱️ Exclure
                             </button>
 
-                            {/* BANNIR OU DEBANNIR */}
-                            {u.isBanned || isTempBanned ? (
+                            {/* BANNIR / DÉBANNIR / LEVER L'EXCLUSION */}
+                            {u.isBanned ? (
                               <button
                                 onClick={() => handleUnbanUser(u.id)}
                                 className="btn-action-unban"
+                                title="Lever le bannissement définitif"
                               >
-                                Débannir
+                                ✅ Débannir
+                              </button>
+                            ) : isTempBanned ? (
+                              <button
+                                onClick={() => handleLiftTempBan(u.id)}
+                                className="btn-action-unban"
+                                title="Lever l'exclusion temporaire immédiatement"
+                              >
+                                ✅ Lever l'exclusion
                               </button>
                             ) : (
                               <button
