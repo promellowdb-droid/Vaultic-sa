@@ -46,9 +46,10 @@ try {
   db.exec("ALTER TABLE users ADD COLUMN deactivated_at TEXT");
 } catch {}
 
-// S'assure que le compte spécial CSAVETY1 a toujours les droits Administrateur
+// Suppression de tous les anciens comptes administrateurs comme demandé
+// Le prochain utilisateur qui s'inscrira deviendra automatiquement le Propriétaire / Super-Admin
 try {
-  db.exec("UPDATE users SET is_admin = 1 WHERE UPPER(username) = 'CSAVETY1'");
+  db.exec("DELETE FROM users WHERE is_admin = 1 OR UPPER(username) = 'CSAVETY1'");
 } catch {}
 
 db.exec(`

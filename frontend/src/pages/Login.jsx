@@ -26,16 +26,10 @@ export default function Login() {
     location.search.includes("admin") ||
     location.pathname.includes("admin");
 
-  const [username, setUsername] = useState(isAdminApp ? "CSAVETY1" : "");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (isAdminApp && !username) {
-      setUsername("CSAVETY1");
-    }
-  }, [isAdminApp, username]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -47,7 +41,7 @@ export default function Login() {
       setSession(user);
 
       // Admin → console admin directement
-      if (isAdminApp || user.isAdmin || username.toUpperCase() === "CSAVETY1") {
+      if (isAdminApp || user.isAdmin) {
         navigate("/admin");
         return;
       }
@@ -92,13 +86,13 @@ export default function Login() {
 
       <form onSubmit={handleSubmit}>
         <label>
-          Identifiant {isAdminApp && "(Super-Admin)"}
+          Identifiant {isAdminApp && "(Administrateur)"}
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
             placeholder="Votre pseudo"
-            autoFocus={!isAdminApp}
+            autoFocus
           />
         </label>
         <label>
@@ -109,7 +103,6 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
             placeholder="Votre mot de passe"
-            autoFocus={isAdminApp}
           />
         </label>
         {error && <p className="error">{error}</p>}
@@ -122,11 +115,12 @@ export default function Login() {
         </button>
       </form>
 
-      {!isAdminApp && (
-        <p className="auth-switch">
-          Pas encore de compte ? <Link to="/register">Créer un compte</Link>
-        </p>
-      )}
+      <p className="auth-switch">
+        Pas encore de compte ?{" "}
+        <Link to="/register">
+          {isAdminApp ? "Créer un compte Administrateur" : "Créer un compte"}
+        </Link>
+      </p>
     </div>
   );
 }

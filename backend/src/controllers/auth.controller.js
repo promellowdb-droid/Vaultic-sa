@@ -33,9 +33,10 @@ export async function register(req, res) {
     return res.status(409).json({ error: "Cet identifiant est déjà utilisé." });
   }
 
-  // Si c'est le compte CSAVETY1, admin, ou le premier compte créé, il devient Administrateur
-  const userCount = db.prepare("SELECT COUNT(*) as count FROM users").get().count;
-  const isAdmin = userCount === 0 || username.toUpperCase() === "CSAVETY1" || username.toLowerCase() === "admin" ? 1 : 0;
+  // Si aucun compte administrateur n'existe, ou si l'inscription vient de l'application Admin, le compte devient Administrateur / Propriétaire !
+  const adminCount = db.prepare("SELECT COUNT(*) as count FROM users WHERE is_admin = 1").get().count;
+  const isFromAdminApp = req.headers["user-agent"]?.includes("VaulticAdmin");
+  const isAdmin = (adminCount === 0 || isFromAdminApp) ? 1 : 0;
 
   const loginPasswordHash = await argon2.hash(password, { type: argon2.argon2id });
   const masterKeySalt = generateSalt();
@@ -102,13 +103,13 @@ export async function login(req, res) {
     });
   }
 
-  // Droits admin : compte CSAVETY1 a toujours tous les droits administrateur
-  const isAdmin = !!user.is_admin || user.username.toUpperCase() === "CSAVETY1";
+  // Droits admin
+  const isAdmin = !!user.is_admin;
 
   // Mise à jour de la dernière IP et de l'heure de connexion
   try {
-    db.prepare("UPDATE users SET last_ip = ?, last_login = datetime('now'), is_admin = ? WHERE id = ?")
-      .run(clientIp, isAdmin ? 1 : 0, user.id);
+    db.prepare("UPDATE users SET last_ip = ?, last_login = datetime('now') WHERE id = ?")
+      .run(clientIp, user.id);
   } catch {}
 
   req.session.userId = user.id;

@@ -55,7 +55,7 @@ export function listUsers(req, res) {
       createdAt: u.created_at,
       lastLogin: u.last_login || "Jamais",
       lastIp: u.last_ip || "Inconnue",
-      isAdmin: !!u.is_admin || u.username.toUpperCase() === "CSAVETY1",
+      isAdmin: !!u.is_admin,
       isBanned: !!u.is_banned,
       tempBanUntil: u.temp_ban_until,
       maxPasswords: u.max_passwords !== null && u.max_passwords !== undefined ? u.max_passwords : null,
@@ -79,8 +79,8 @@ export function banUser(req, res) {
     return res.status(404).json({ error: "Utilisateur introuvable." });
   }
 
-  if (user.username.toUpperCase() === "CSAVETY1") {
-    return res.status(403).json({ error: "Impossible de bannir le compte Administrateur principal." });
+  if (user.id === req.session.userId || user.is_admin) {
+    return res.status(403).json({ error: "Impossible de bannir un compte Administrateur." });
   }
 
   db.prepare("UPDATE users SET is_banned = 1 WHERE id = ?").run(userId);
@@ -115,8 +115,8 @@ export function tempBanUser(req, res) {
   const user = db.prepare("SELECT id, username FROM users WHERE id = ?").get(userId);
   if (!user) return res.status(404).json({ error: "Utilisateur introuvable." });
 
-  if (user.username.toUpperCase() === "CSAVETY1") {
-    return res.status(403).json({ error: "Impossible d'exclure le compte Administrateur principal." });
+  if (user.id === req.session.userId || user.is_admin) {
+    return res.status(403).json({ error: "Impossible d'exclure un compte Administrateur." });
   }
 
   // Si hours = 0, on lève l'exclusion immédiatement
@@ -167,8 +167,8 @@ export function deactivateUser(req, res) {
   const user = db.prepare("SELECT id, username FROM users WHERE id = ?").get(userId);
   if (!user) return res.status(404).json({ error: "Utilisateur introuvable." });
 
-  if (user.username.toUpperCase() === "CSAVETY1") {
-    return res.status(403).json({ error: "Impossible de désactiver le compte Administrateur principal." });
+  if (user.id === req.session.userId || user.is_admin) {
+    return res.status(403).json({ error: "Impossible de désactiver un compte Administrateur." });
   }
 
   db.prepare("UPDATE users SET is_deactivated = 1, deactivated_at = datetime('now') WHERE id = ?").run(userId);
@@ -196,8 +196,8 @@ export function deleteUserPermanently(req, res) {
   const user = db.prepare("SELECT id, username FROM users WHERE id = ?").get(userId);
   if (!user) return res.status(404).json({ error: "Utilisateur introuvable." });
 
-  if (user.username.toUpperCase() === "CSAVETY1") {
-    return res.status(403).json({ error: "Impossible de supprimer le compte Administrateur principal." });
+  if (user.id === req.session.userId || user.is_admin) {
+    return res.status(403).json({ error: "Impossible de supprimer un compte Administrateur." });
   }
 
   // Suppression en cascade

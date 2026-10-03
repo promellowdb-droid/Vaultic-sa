@@ -244,7 +244,7 @@ export default function Admin() {
 
           <div className="nav-cta-group">
             <span className="admin-user-pill">
-              👑 Connecté : <strong>{user?.username || "CSAVETY1"}</strong>
+              👑 Connecté : <strong>{user?.username || "Administrateur"}</strong>
             </span>
             <button
               onClick={handleToggleRegistrations}
@@ -347,7 +347,7 @@ export default function Admin() {
               </thead>
               <tbody>
                 {filteredUsers.map((u) => {
-                  const isCSAVETY = u.username.toUpperCase() === "CSAVETY1";
+                  const isCurrentAdmin = u.id === user?.id || u.isAdmin;
                   const isTempBanned = u.tempBanUntil && new Date(u.tempBanUntil) > new Date();
 
                   return (
@@ -377,7 +377,7 @@ export default function Admin() {
                           <span>
                             {u.entriesCount} / {u.maxPasswords === null ? "Illimité" : u.maxPasswords}
                           </span>
-                          {!isCSAVETY && (
+                          {!isCurrentAdmin && (
                             <button
                               onClick={() => {
                                 setLimitModalUser(u);
@@ -407,7 +407,7 @@ export default function Admin() {
                       </td>
 
                       <td style={{ textAlign: "right" }}>
-                        {!isCSAVETY ? (
+                        {!isCurrentAdmin ? (
                           <div className="action-buttons-group">
                             {/* EXCLURE TEMPORAIREMENT */}
                             <button
@@ -472,7 +472,7 @@ export default function Admin() {
                             </button>
                           </div>
                         ) : (
-                          <span className="master-admin-badge">Compte Principal Protégé</span>
+                          <span className="master-admin-badge">Compte Administrateur Protégé</span>
                         )}
                       </td>
                     </tr>
