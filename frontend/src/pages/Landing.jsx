@@ -97,10 +97,7 @@ export default function Landing() {
         <div className="nav-container">
           <Link to="/" className="theme-logo" aria-label="Accueil Vaultic">
             <div className="logo-icon-box">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                <path d="M9 12l2 2 4-4" />
-              </svg>
+              <img src="/logo.png" alt="Vaultic logo" style={{width:'34px',height:'34px',objectFit:'contain'}} />
             </div>
             <div className="brand-titles-nav">
               <span className="logo-title">VAULTIC</span>
@@ -547,12 +544,9 @@ export default function Landing() {
       <footer className="theme-footer">
         <div className="footer-container">
           <div className="footer-brand-side">
-            <div className="theme-logo">
+          <div className="theme-logo">
               <div className="logo-icon-box small">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  <path d="M9 12l2 2 4-4" />
-                </svg>
+                <img src="/logo.png" alt="Vaultic logo" style={{width:'28px',height:'28px',objectFit:'contain'}} />
               </div>
               <span className="logo-title">VAULTIC</span>
             </div>
