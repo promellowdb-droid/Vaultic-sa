@@ -173,22 +173,28 @@ input {
 }
 
 .logo-icon-box {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(101, 113, 255, 0.3), rgba(20, 20, 20, 0.8));
-  border: 1px solid rgba(101, 113, 255, 0.5);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--theme-color);
-  box-shadow: 0 0 20px var(--theme-glow);
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+}
+
+.logo-icon-box:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
 }
 
 .logo-icon-box.small {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: 9px;
 }
 
 .logo-title {
